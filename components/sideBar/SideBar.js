@@ -90,16 +90,16 @@ export default function SideBar() {
                     </li>
                     <li className="px-5 py-2">
                         <Link
-                            href={"/dashboard/usersmanagment"}
-                            className={`item-container ${route === "/dashboard/usersmanagment" && "bg-emerald-600"} transition-all duration-300 group flex gap-3 justify-between text-gray-800 items-center p-2.5 hover:bg-emerald-600 rounded-lg`}
+                            href={"/dashboard/usersmanagement"}
+                            className={`item-container ${route === "/dashboard/usersmanagement" && "bg-emerald-600"} transition-all duration-300 group flex gap-3 justify-between text-gray-800 items-center p-2.5 hover:bg-emerald-600 rounded-lg`}
                         >
                             <div
-                                className={`text ${route === "/dashboard/usersmanagment" && "text-white"} group-hover:text-white transition-all duration-300`}
+                                className={`text ${route === "/dashboard/usersmanagement" && "text-white"} group-hover:text-white transition-all duration-300`}
                             >
                                 مدیریت کاربران
                             </div>
                             <div
-                                className={`icon ${route === "/dashboard/usersmanagment" && "text-white"} group-hover:text-white transition-all duration-300 size-5`}
+                                className={`icon ${route === "/dashboard/usersmanagement" && "text-white"} group-hover:text-white transition-all duration-300 size-5`}
                             >
                                 <FontAwesomeIcon icon={faUsers} />
                             </div>

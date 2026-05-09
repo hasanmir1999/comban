@@ -4,22 +4,21 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
-export default function FilterOption() {
+export default function FilterOption({ title, optionItems }) {
     const [filterStat, setFilterStat] = useState(false);
     const [selectedItem, setSelectedItem] = useState("");
-
     return (
         <div className="filter-option">
             <div className="title">
                 <p className=" text-[13px] font-semibold text-gray-900">
-                    برند کمباین:
+                    {title}
                 </p>
             </div>
-            <div
-                onClick={() => setFilterStat(!filterStat)}
-                className="filter cursor-pointer mt-2"
-            >
-                <div className="display-selected-item border border-gray-300 p-2 rounded-lg flex justify-between items-center">
+            <div className="filter relative mt-2">
+                <div
+                    onClick={() => setFilterStat(!filterStat)}
+                    className="display-selected-item cursor-pointer border border-gray-300 p-2 rounded-lg flex justify-between items-center"
+                >
                     <div className="selected-item-text text-gray-800">
                         {selectedItem === "" ? "همه" : selectedItem}
                     </div>
@@ -28,20 +27,26 @@ export default function FilterOption() {
                         className={`text-gray-800 transition-all duration-300 ${filterStat && "rotate-180"}`}
                     />
                 </div>
-                <div className="option-list border border-gray-300 rounded-lg mt-2 p-1">
+                <div
+                    className={`option-list absolute bg-white w-full transition-all duration-300 ${filterStat ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} border border-gray-300 rounded-lg mt-2 p-1`}
+                >
                     <ul>
-                        <li className="rounded-lg my-1 p-2 transition-all duration-300 text-gray-800 hover:text-white hover:bg-emerald-600">
-                            <p className="text">سامسونگ</p>
-                        </li>
-                        <li className="rounded-lg my-1 p-2 transition-all duration-300 text-gray-800 hover:text-white hover:bg-emerald-600">
-                            <p className="text">سامسونگ</p>
-                        </li>
-                        <li className="rounded-lg my-1 p-2 transition-all duration-300 text-gray-800 hover:text-white hover:bg-emerald-600">
-                            <p className="text">سامسونگ</p>
-                        </li>
-                        <li className="rounded-lg my-1 p-2 transition-all duration-300 text-gray-800 hover:text-white hover:bg-emerald-600">
-                            <p className="text">سامسونگ</p>
-                        </li>
+                        {optionItems.map((item) => {
+                            return (
+                                <li
+                                    key={item.id}
+                                    onClick={() => {
+                                        setSelectedItem(item.name);
+                                        setFilterStat(false);
+                                    }}
+                                    className="rounded-lg cursor-pointer my-1 p-2 transition-all duration-300 text-gray-800 hover:text-white hover:bg-emerald-600"
+                                >
+                                    <p className="text">
+                                        {item.name === "" ? "همه" : item.name}
+                                    </p>
+                                </li>
+                            );
+                        })}
                     </ul>
                 </div>
             </div>

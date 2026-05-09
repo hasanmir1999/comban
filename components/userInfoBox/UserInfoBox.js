@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function UserInfoBox() {
     return (
         <div className="user-info-container hidden p-2 rounded-lg gap-3 border border-emerald-600 sm:flex items-center w-70">
-            <div className="icon size-10 p-3 rounded-lg bg-emerald-600 text-white">
+            <div className="icon size-10 flex justify-center items-center text-lg rounded-lg bg-emerald-600 text-white">
                 <FontAwesomeIcon icon={faUser} />
             </div>
             <div className="text">

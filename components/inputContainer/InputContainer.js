@@ -3,12 +3,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
-export default function InputContainer({ title, type, onChange, dir }) {
+export default function InputContainer({
+    title,
+    type,
+    onChange,
+    dir,
+    placeHolder,
+}) {
     const [eyeStat, setEyeStat] = useState(false);
     return (
         <div className="input-container w-[95%] relative">
             <p className="text-[13px] font-semibold text-gray-900">{title}</p>
             <input
+                placeholder={placeHolder}
                 onChange={(e) => onChange(e.target.value)}
                 type={
                     type === "text"

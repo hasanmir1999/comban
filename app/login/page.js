@@ -88,7 +88,7 @@ export default function LoginPage() {
                             <button
                                 onClick={loginHandler}
                                 disabled={loading}
-                                className={`py-1.75 px-2 ${loading ? "cursor-not-allowed" : "cursor-pointer"} flex items-center gap-1 justify-center text-white bg-green-600 w-full rounded-lg text-sm sm:text-base`}
+                                className={`py-1.75 px-2 ${loading ? "cursor-not-allowed" : "cursor-pointer"} flex items-center gap-1 justify-center text-white bg-emerald-600 w-full rounded-lg text-sm sm:text-base`}
                             >
                                 ورود
                                 {loading ? (
