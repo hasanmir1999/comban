@@ -19,7 +19,7 @@ export default function page() {
     const createInspectorHandler = async () => {
         try {
             const res = await axios.post(
-                "http://192.168.43.203:8000/api-v1/inspectors/",
+                "https://lotexev.ir/api-v1/inspectors/",
                 { ...formData },
             );
             console.log(res);
@@ -29,7 +29,7 @@ export default function page() {
     };
 
     return (
-        <div className="new-combine-page bg-white w-full min-h-svh pt-30 px-10 lg:pr-90">
+        <div className="new-combine-page bg-white w-full min-h-svh pt-30 pb-5 px-10 lg:pr-90">
             <div className="main-content">
                 <div className="title flex items-center gap-2">
                     <div className="icon">

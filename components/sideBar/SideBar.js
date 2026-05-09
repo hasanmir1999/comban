@@ -9,6 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { logout } from "@/utils/logout";
 
 export default function SideBar() {
     const route = usePathname();
@@ -59,12 +60,12 @@ export default function SideBar() {
                             className={`item-container group ${route === "/dashboard/statistics" && "bg-emerald-600"} flex gap-3 justify-between text-gray-800 items-center p-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg`}
                         >
                             <div
-                                className={`text ${route === "/dashboard/statistics" && "bg-white"} group-hover:text-white transition-all duration-300`}
+                                className={`text ${route === "/dashboard/statistics" && "text-white"} group-hover:text-white transition-all duration-300`}
                             >
                                 گزارش گیری و لیست کمباین ها
                             </div>
                             <div
-                                className={`icon ${route === "/dashboard/statistics" && "bg-white"} group-hover:text-white transition-all duration-300 size-5`}
+                                className={`icon ${route === "/dashboard/statistics" && "text-white"} group-hover:text-white transition-all duration-300 size-5`}
                             >
                                 <FontAwesomeIcon icon={faChartLine} />
                             </div>
@@ -107,7 +108,7 @@ export default function SideBar() {
                 </ul>
             </nav>
             <div className="logout-container mt-70">
-                <div className="logout group cursor-pointer flex gap-3 justify-between text-gray-800 items-center m-5 p-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg">
+                <div onClick={logout} className="logout group cursor-pointer flex gap-3 justify-between text-gray-800 items-center m-5 p-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg">
                     <div className="text group-hover:text-white transition-all duration-300">
                         خروج
                     </div>

@@ -23,7 +23,7 @@ export default function NewCombinePage() {
     const createCombineHandler = async () => {
         setLoading(true)
         try {
-            const res = await axios.post("http://192.168.43.203:8000/api-v1/", { ...formData });
+            const res = await axios.post("https://lotexev.ir/api-v1/", { ...formData });
             console.log(res);
             setLoading(false)
             toast.success('اطلاعات کمباین جدید با موفقیت ثبت شد.')
@@ -34,7 +34,7 @@ export default function NewCombinePage() {
     };
 
     return (
-        <div className="new-combine-page bg-white w-full min-h-svh pt-30 px-10 lg:pr-90">
+        <div className="new-combine-page bg-white w-full min-h-svh pt-30 pb-5 px-10 lg:pr-90">
             <div className="main-content">
                 <div className="title flex items-center gap-2">
                     <div className="icon">

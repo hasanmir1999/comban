@@ -27,7 +27,7 @@ export default function LoginPage() {
         }
         try {
             const res = await axios.post(
-                "api-v1/login",
+                "https://lotexev.ir/api-v1/login",
                 {
                     ...formData,
                 },

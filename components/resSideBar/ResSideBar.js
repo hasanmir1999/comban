@@ -11,6 +11,7 @@ import Link from "next/link";
 import useSidebarStore from "@/store/useSideBarStore";
 import ResUserInfoBox from "../resUserInfoBox/ResUserInfoBox";
 import { usePathname } from "next/navigation";
+import { logout } from "@/utils/logout";
 
 export default function ResSideBar() {
     const route = usePathname()
@@ -19,10 +20,10 @@ export default function ResSideBar() {
         <div
             className={`res-side-bar lg:hidden transition-all duration-300 ${sideBarStat ? "translate-x-0" : "translate-x-80"} fixed top-0 right-0 bg-white h-full w-70 border-l border-gray-300 flex flex-col`}
         >
-            <div className="res-user-info-box-container sm:hidden mt-30 px-3">
+            <div className="res-user-info-box-container sm:hidden mt-25 px-3">
                 <ResUserInfoBox />
             </div>
-            <nav className="mt-15 sm:mt-30 flex-1 overflow-y-auto">
+            <nav className="mt-10 sm:mt-30 flex-1 overflow-y-auto">
                 <ul className="side-bar-list-item">
                     <li className="px-3 py-2">
                         <Link
@@ -92,7 +93,7 @@ export default function ResSideBar() {
                 </ul>
             </nav>
             <div className="logout-container mt-auto">
-                <div className="logout group cursor-pointer flex gap-3 justify-between text-gray-800 items-center px-3 py-2 m-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg">
+                <div onClick={logout} className="logout group cursor-pointer flex gap-3 justify-between text-gray-800 items-center px-3 py-2 m-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg">
                     <div className="text text-sm group-hover:text-white transition-all duration-300">
                         خروج
                     </div>
