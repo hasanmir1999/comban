@@ -148,7 +148,7 @@ export default function UsersManagementPage() {
                                         fname: v,
                                     }))
                                 }
-                                dir={"rtl"}
+                                dir={"ltr"}
                             />
                         </div>
                     </div>

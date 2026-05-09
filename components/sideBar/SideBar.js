@@ -15,10 +15,8 @@ export default function SideBar() {
     const route = usePathname();
 
     return (
-        <div
-            className={`side-bar hidden lg:block fixed top-0 right-0 bg-white h-full w-78 border-l border-gray-300`}
-        >
-            <nav className="mt-30">
+        <div className="side-bar hidden lg:flex flex-col fixed top-0 right-0 bg-white h-full w-78 border-l border-gray-300">
+            <nav className="mt-30 flex-1">
                 <ul className="side-bar-list-item">
                     <li className="px-5 py-2">
                         <Link
@@ -107,8 +105,11 @@ export default function SideBar() {
                     </li>
                 </ul>
             </nav>
-            <div className="logout-container mt-70">
-                <div onClick={logout} className="logout group cursor-pointer flex gap-3 justify-between text-gray-800 items-center m-5 p-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg">
+            <div className="logout-container mb-5">
+                <div
+                    onClick={logout}
+                    className="logout group cursor-pointer flex gap-3 justify-between text-gray-800 items-center mx-5 p-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg"
+                >
                     <div className="text group-hover:text-white transition-all duration-300">
                         خروج
                     </div>

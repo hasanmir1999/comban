@@ -152,6 +152,7 @@ export default function InspectionPage({ combineId = 1 }) {
             setLocation(null);
             setComponentsData(initialComponentsData());
         } catch (error) {
+            console.log(error)
             toast.error(error.response?.data?.detail || "خطا در ثبت بازرسی");
         } finally {
             setLoading(false);
