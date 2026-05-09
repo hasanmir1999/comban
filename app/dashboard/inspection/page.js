@@ -39,13 +39,22 @@ export default function InspectionPage({ combineId = 1 }) {
 
     const getLocation = () => {
         setLocationLoading(true);
+
+        console.log("🔍 شروع درخواست موقعیت...");
+        console.log(
+            "navigator.geolocation موجود است:",
+            !!navigator.geolocation,
+        );
+
         if (!navigator.geolocation) {
             toast.error("مرورگر شما از GPS پشتیبانی نمی‌کند");
             setLocationLoading(false);
             return;
         }
+
         navigator.geolocation.getCurrentPosition(
             (position) => {
+                console.log("✅ موقعیت دریافت شد:", position);
                 setLocation({
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
@@ -55,19 +64,28 @@ export default function InspectionPage({ combineId = 1 }) {
                 setLocationLoading(false);
             },
             (err) => {
+                console.error("❌ خطا در دریافت موقعیت:", {
+                    code: err.code,
+                    message: err.message,
+                    PERMISSION_DENIED: err.PERMISSION_DENIED,
+                    POSITION_UNAVAILABLE: err.POSITION_UNAVAILABLE,
+                    TIMEOUT: err.TIMEOUT,
+                });
+
                 const messages = {
-                    [err.PERMISSION_DENIED]:
-                        "لطفاً دسترسی به موقعیت مکانی را مجاز کنید",
-                    [err.POSITION_UNAVAILABLE]: "موقعیت مکانی در دسترس نیست",
-                    [err.TIMEOUT]: "زمان درخواست تمام شد، دوباره تلاش کنید",
+                    1: "لطفاً دسترسی به موقعیت مکانی را مجاز کنید", // PERMISSION_DENIED
+                    2: "موقعیت مکانی در دسترس نیست", // POSITION_UNAVAILABLE
+                    3: "زمان درخواست تمام شد، دوباره تلاش کنید", // TIMEOUT
                 };
-                toast.error(messages[err.code] || "خطای ناشناخته");
+                toast.error(
+                    messages[err.code] || `خطای ناشناخته (کد: ${err.code})`,
+                );
                 setLocationLoading(false);
             },
             {
-                enableHighAccuracy: false, // تغییر به false برای سرعت بیشتر
-                timeout: 30000, // افزایش به 30 ثانیه
-                maximumAge: 60000, // قبول موقعیت کش‌شده تا 60 ثانیه
+                enableHighAccuracy: false,
+                timeout: 30000,
+                maximumAge: 60000,
             },
         );
     };
