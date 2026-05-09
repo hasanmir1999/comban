@@ -145,7 +145,7 @@ export default function InspectionPage({ combineId = 1 }) {
                 formData,
                 { headers: { "Content-Type": "multipart/form-data" } },
             );
-
+//1
             toast.success("بازرسی فنی با موفقیت ثبت شد");
             setResult("");
             setOverallNotes("");
