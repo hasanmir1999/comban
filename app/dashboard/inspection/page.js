@@ -64,7 +64,11 @@ export default function InspectionPage({ combineId = 1 }) {
                 toast.error(messages[err.code] || "خطای ناشناخته");
                 setLocationLoading(false);
             },
-            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 },
+            {
+                enableHighAccuracy: false, // تغییر به false برای سرعت بیشتر
+                timeout: 30000, // افزایش به 30 ثانیه
+                maximumAge: 60000, // قبول موقعیت کش‌شده تا 60 ثانیه
+            },
         );
     };
 
@@ -203,9 +207,11 @@ export default function InspectionPage({ combineId = 1 }) {
                                                 : faLocationDot
                                         }
                                         className={`text-red-600
-                                            ${locationLoading
-                                                ? "animate-pulse"
-                                                : ""}
+                                            ${
+                                                locationLoading
+                                                    ? "animate-pulse"
+                                                    : ""
+                                            }
                                         `}
                                     />
                                     {locationLoading

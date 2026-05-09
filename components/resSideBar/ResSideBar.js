@@ -14,8 +14,9 @@ import { usePathname } from "next/navigation";
 import { logout } from "@/utils/logout";
 
 export default function ResSideBar() {
-    const route = usePathname()
+    const route = usePathname();
     const sideBarStat = useSidebarStore((s) => s.sideBarStat);
+    const closeSidebar = useSidebarStore((s) => s.closeSidebar);
     return (
         <div
             className={`res-side-bar lg:hidden transition-all duration-300 ${sideBarStat ? "translate-x-0" : "translate-x-80"} fixed top-0 right-0 bg-white h-full w-70 border-l border-gray-300 flex flex-col`}
@@ -28,12 +29,17 @@ export default function ResSideBar() {
                     <li className="px-3 py-2">
                         <Link
                             href={"/dashboard/newcombine"}
-                            className={`item-container group ${route === '/dashboard/newcombine' && 'bg-emerald-600'} flex gap-3 justify-between text-gray-800 items-center p-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg`}
+                            onClick={closeSidebar}
+                            className={`item-container group ${route === "/dashboard/newcombine" && "bg-emerald-600"} flex gap-3 justify-between text-gray-800 items-center p-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg`}
                         >
-                            <div className={`text text-sm ${route === '/dashboard/newcombine' && 'text-white'} group-hover:text-white transition-all duration-300`}>
+                            <div
+                                className={`text text-sm ${route === "/dashboard/newcombine" && "text-white"} group-hover:text-white transition-all duration-300`}
+                            >
                                 ثبت کمباین جدید
                             </div>
-                            <div className={`icon ${route === '/dashboard/newcombine' && 'text-white'} group-hover:text-white transition-all duration-300 size-5`}>
+                            <div
+                                className={`icon ${route === "/dashboard/newcombine" && "text-white"} group-hover:text-white transition-all duration-300 size-5`}
+                            >
                                 <FontAwesomeIcon icon={faPlus} />
                             </div>
                         </Link>
@@ -41,12 +47,17 @@ export default function ResSideBar() {
                     <li className="px-3 py-2">
                         <Link
                             href={"/dashboard/inspection"}
-                            className={`item-container group ${route === '/dashboard/inspection' && 'bg-emerald-600'} flex gap-3 justify-between text-gray-800 items-center p-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg`}
+                            onClick={closeSidebar}
+                            className={`item-container group ${route === "/dashboard/inspection" && "bg-emerald-600"} flex gap-3 justify-between text-gray-800 items-center p-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg`}
                         >
-                            <div className={`text ${route === '/dashboard/inspection' && 'text-white'} text-sm group-hover:text-white transition-all duration-300`}>
+                            <div
+                                className={`text ${route === "/dashboard/inspection" && "text-white"} text-sm group-hover:text-white transition-all duration-300`}
+                            >
                                 بازرسی فنی
                             </div>
-                            <div className={`icon ${route === '/dashboard/inspection' && 'text-white'} group-hover:text-white transition-all duration-300 size-5`}>
+                            <div
+                                className={`icon ${route === "/dashboard/inspection" && "text-white"} group-hover:text-white transition-all duration-300 size-5`}
+                            >
                                 <FontAwesomeIcon icon={faWrench} />
                             </div>
                         </Link>
@@ -54,12 +65,17 @@ export default function ResSideBar() {
                     <li className="px-3 py-2">
                         <Link
                             href={"/dashboard/statistics"}
-                            className={`item-container group ${route === '/dashboard/statistics' && 'bg-emerald-600'} flex gap-3 justify-between text-gray-800 items-center p-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg`}
+                            onClick={closeSidebar}
+                            className={`item-container group ${route === "/dashboard/statistics" && "bg-emerald-600"} flex gap-3 justify-between text-gray-800 items-center p-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg`}
                         >
-                            <div className={`text ${route === '/dashboard/statistics' && 'text-white'} text-sm group-hover:text-white transition-all duration-300`}>
+                            <div
+                                className={`text ${route === "/dashboard/statistics" && "text-white"} text-sm group-hover:text-white transition-all duration-300`}
+                            >
                                 گزارش گیری و لیست کمباین ها
                             </div>
-                            <div className={`icon ${route === '/dashboard/statistics' && 'text-white'} group-hover:text-white transition-all duration-300 size-5`}>
+                            <div
+                                className={`icon ${route === "/dashboard/statistics" && "text-white"} group-hover:text-white transition-all duration-300 size-5`}
+                            >
                                 <FontAwesomeIcon icon={faChartLine} />
                             </div>
                         </Link>
@@ -67,12 +83,17 @@ export default function ResSideBar() {
                     <li className="px-3 py-2">
                         <Link
                             href={"/dashboard/newinspector"}
-                            className={`item-container group ${route === '/dashboard/newinspector' && 'bg-emerald-600'} flex gap-3 justify-between text-gray-800 items-center p-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg`}
+                            onClick={closeSidebar}
+                            className={`item-container group ${route === "/dashboard/newinspector" && "bg-emerald-600"} flex gap-3 justify-between text-gray-800 items-center p-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg`}
                         >
-                            <div className={`text ${route === '/dashboard/newinspector' && 'text-white'} text-sm group-hover:text-white transition-all duration-300`}>
+                            <div
+                                className={`text ${route === "/dashboard/newinspector" && "text-white"} text-sm group-hover:text-white transition-all duration-300`}
+                            >
                                 ثبت ناظر
                             </div>
-                            <div className={`icon ${route === '/dashboard/newinspector' && 'text-white'} group-hover:text-white transition-all duration-300 size-5`}>
+                            <div
+                                className={`icon ${route === "/dashboard/newinspector" && "text-white"} group-hover:text-white transition-all duration-300 size-5`}
+                            >
                                 <FontAwesomeIcon icon={faUserPlus} />
                             </div>
                         </Link>
@@ -80,12 +101,17 @@ export default function ResSideBar() {
                     <li className="px-3 py-2">
                         <Link
                             href={"/dashboard/usersmanagement"}
-                            className={`item-container ${route === '/dashboard/usersmanagement' && 'bg-emerald-600'} transition-all duration-300 group flex gap-3 justify-between text-gray-800 items-center p-2.5 hover:bg-emerald-600 rounded-lg`}
+                            onClick={closeSidebar}
+                            className={`item-container ${route === "/dashboard/usersmanagement" && "bg-emerald-600"} transition-all duration-300 group flex gap-3 justify-between text-gray-800 items-center p-2.5 hover:bg-emerald-600 rounded-lg`}
                         >
-                            <div className={`text text-sm ${route === '/dashboard/usersmanagement' && 'text-white'} group-hover:text-white transition-all duration-300`}>
+                            <div
+                                className={`text text-sm ${route === "/dashboard/usersmanagement" && "text-white"} group-hover:text-white transition-all duration-300`}
+                            >
                                 مدیریت کاربران
                             </div>
-                            <div className={`icon ${route === '/dashboard/usersmanagement' && 'text-white'} group-hover:text-white transition-all duration-300 size-5`}>
+                            <div
+                                className={`icon ${route === "/dashboard/usersmanagement" && "text-white"} group-hover:text-white transition-all duration-300 size-5`}
+                            >
                                 <FontAwesomeIcon icon={faUsers} />
                             </div>
                         </Link>
@@ -93,7 +119,10 @@ export default function ResSideBar() {
                 </ul>
             </nav>
             <div className="logout-container mt-auto">
-                <div onClick={logout} className="logout group cursor-pointer flex gap-3 justify-between text-gray-800 items-center px-3 py-2 m-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg">
+                <div
+                    onClick={logout}
+                    className="logout group cursor-pointer flex gap-3 justify-between text-gray-800 items-center px-3 py-2 m-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg"
+                >
                     <div className="text text-sm group-hover:text-white transition-all duration-300">
                         خروج
                     </div>
