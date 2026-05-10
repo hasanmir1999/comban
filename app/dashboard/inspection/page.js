@@ -1,5 +1,6 @@
 "use client";
 
+import InputContainer from "@/components/inputContainer/InputContainer";
 import TecnicalItem from "@/components/tecnicalItem/TecnicalItem";
 import {
     faSpinner,
@@ -145,14 +146,14 @@ export default function InspectionPage({ combineId = 1 }) {
                 formData,
                 { headers: { "Content-Type": "multipart/form-data" } },
             );
-//1
+            //1
             toast.success("بازرسی فنی با موفقیت ثبت شد");
             setResult("");
             setOverallNotes("");
             setLocation(null);
             setComponentsData(initialComponentsData());
         } catch (error) {
-            console.log(error)
+            console.log(error);
             toast.error(error.response?.data?.detail || "خطا در ثبت بازرسی");
         } finally {
             setLoading(false);
@@ -162,7 +163,179 @@ export default function InspectionPage({ combineId = 1 }) {
     return (
         <div className="inspection-page bg-white w-full min-h-svh pb-5 pt-30 px-10 lg:pr-90">
             <div className="main-content">
-                <div className="title flex items-center gap-2">
+                <div className="combine-list-container mt-8">
+                    <div className="title flex items-center gap-2">
+                        <div className="icon">
+                            <div className="size-5 rounded-lg bg-emerald-600"></div>
+                        </div>
+                        <h5 className="text-lg text-gray-800 font-bold">
+                            لیست کمباین ها
+                        </h5>
+                    </div>
+                    <div className="search-and-list-container mt-8">
+                        <div className="search-container">
+                            <div className="row flex items-end gap-y-5">
+                                <div className="col w-full px-2">
+                                    <InputContainer
+                                        title={"جستجو:"}
+                                        placeHolder={
+                                            "متن جستجو (مثلا نام مالک،سریال،شماره موتور،...)"
+                                        }
+                                        dir={"rtl"}
+                                    />
+                                </div>
+                                <div className="col pr-2">
+                                    <div className="btn-container flex items-center gap-2">
+                                        <button className="text-white cursor-pointer bg-emerald-600 whitespace-nowrap py-1 px-3 rounded-lg">
+                                            جستجو
+                                        </button>
+                                        <button className="text-white cursor-pointer bg-amber-500 whitespace-nowrap py-1 px-3 rounded-lg">
+                                            نمایش همه
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="list-container rounded-lg mt-5 overflow-x-auto">
+                            <div className="table-wrapper min-w-200">
+                                <div className="table-header bg-emerald-600">
+                                    <ul className="flex items-center">
+                                        <li className="w-25 py-4 px-3 shrink-0">
+                                            <p className="text text-white text-sm">
+                                                شناسه
+                                            </p>
+                                        </li>
+                                        <li className="w-37.5 py-4 px-3 shrink-0">
+                                            <p className="text text-white text-sm">
+                                                مالک
+                                            </p>
+                                        </li>
+                                        <li className="w-30 py-4 px-3 shrink-0">
+                                            <p className="text text-white text-sm">
+                                                تلفن
+                                            </p>
+                                        </li>
+                                        <li className="w-30 py-4 px-3 shrink-0">
+                                            <p className="text text-white text-sm">
+                                                برند
+                                            </p>
+                                        </li>
+                                        <li className="w-35 py-4 px-3 shrink-0">
+                                            <p className="text text-white text-sm">
+                                                مدل
+                                            </p>
+                                        </li>
+                                        <li className="w-25 py-4 px-3 shrink-0">
+                                            <p className="text text-white text-sm">
+                                                سریال (VIN)
+                                            </p>
+                                        </li>
+                                        <li className="flex-1 py-4 px-3">
+                                            <p className="text text-white text-sm">
+                                                شماره موتور
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div className="table-body bg-white border border-t-0 border-gray-300 rounded-lg rounded-t-none">
+                                    <div className="row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
+                                        <div className="id w-25 px-3 shrink-0 text-sm text-gray-800">
+                                            1
+                                        </div>
+                                        <div className="owner w-37.5 px-3 shrink-0 text-sm text-gray-800">
+                                            محمد حسینی
+                                        </div>
+                                        <div className="brand w-30 px-3 shrink-0 text-sm text-gray-800">
+                                            09012345678
+                                        </div>
+                                        <div className="model w-30 px-3 shrink-0 text-sm text-gray-800">
+                                            هپکو
+                                        </div>
+                                        <div className="inspection-date w-35 px-3 shrink-0 text-sm text-gray-800">
+                                            26xz2
+                                        </div>
+                                        <div className="result w-25 px-3 shrink-0 text-sm text-gray-800">
+                                            1234
+                                        </div>
+                                        <div className="inspector flex-1 px-3 text-sm text-gray-800">
+                                            232425
+                                        </div>
+                                    </div>
+                                    <div className="row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
+                                        <div className="id w-25 px-3 shrink-0 text-sm text-gray-800">
+                                            1
+                                        </div>
+                                        <div className="owner w-37.5 px-3 shrink-0 text-sm text-gray-800">
+                                            عبد الله میرزایی
+                                        </div>
+                                        <div className="brand w-30 px-3 shrink-0 text-sm text-gray-800">
+                                            09012345678
+                                        </div>
+                                        <div className="model w-30 px-3 shrink-0 text-sm text-gray-800">
+                                            هپکو
+                                        </div>
+                                        <div className="inspection-date w-35 px-3 shrink-0 text-sm text-gray-800">
+                                            26xz2
+                                        </div>
+                                        <div className="result w-25 px-3 shrink-0 text-sm text-gray-800">
+                                            1234
+                                        </div>
+                                        <div className="inspector flex-1 px-3 text-sm text-gray-800">
+                                            232425
+                                        </div>
+                                    </div>
+                                    <div className="row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
+                                        <div className="id w-25 px-3 shrink-0 text-sm text-gray-800">
+                                            1
+                                        </div>
+                                        <div className="owner w-37.5 px-3 shrink-0 text-sm text-gray-800">
+                                            محمد قادری
+                                        </div>
+                                        <div className="brand w-30 px-3 shrink-0 text-sm text-gray-800">
+                                            09012345678
+                                        </div>
+                                        <div className="model w-30 px-3 shrink-0 text-sm text-gray-800">
+                                            هپکو
+                                        </div>
+                                        <div className="inspection-date w-35 px-3 shrink-0 text-sm text-gray-800">
+                                            26xz2
+                                        </div>
+                                        <div className="result w-25 px-3 shrink-0 text-sm text-gray-800">
+                                            1234
+                                        </div>
+                                        <div className="inspector flex-1 px-3 text-sm text-gray-800">
+                                            232425
+                                        </div>
+                                    </div>
+                                    <div className="row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
+                                        <div className="id w-25 px-3 shrink-0 text-sm text-gray-800">
+                                            1
+                                        </div>
+                                        <div className="owner w-37.5 px-3 shrink-0 text-sm text-gray-800">
+                                            محمد حسن تقدیری
+                                        </div>
+                                        <div className="brand w-30 px-3 shrink-0 text-sm text-gray-800">
+                                            09012345678
+                                        </div>
+                                        <div className="model w-30 px-3 shrink-0 text-sm text-gray-800">
+                                            هپکو
+                                        </div>
+                                        <div className="inspection-date w-35 px-3 shrink-0 text-sm text-gray-800">
+                                            26xz2
+                                        </div>
+                                        <div className="result w-25 px-3 shrink-0 text-sm text-gray-800">
+                                            1234
+                                        </div>
+                                        <div className="inspector flex-1 px-3 text-sm text-gray-800">
+                                            232425
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="title flex items-center gap-2 mt-8">
                     <div className="icon">
                         <div className="size-5 rounded-lg bg-emerald-600"></div>
                     </div>

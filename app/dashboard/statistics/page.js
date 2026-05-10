@@ -395,114 +395,91 @@ export default function StatisticsPage() {
                                             1
                                         </div>
                                         <div className="owner w-37.5 px-3 shrink-0 text-sm text-gray-800">
-                                            محمد حسن میر
+                                            محمد حسینی
                                         </div>
                                         <div className="brand w-30 px-3 shrink-0 text-sm text-gray-800">
+                                            09012345678
+                                        </div>
+                                        <div className="model w-30 px-3 shrink-0 text-sm text-gray-800">
                                             هپکو
                                         </div>
-                                        <div className="model w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            23e1
-                                        </div>
                                         <div className="inspection-date w-35 px-3 shrink-0 text-sm text-gray-800">
-                                            1405/05/05
+                                            26xz2
                                         </div>
                                         <div className="result w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            قبول
+                                            1234
                                         </div>
                                         <div className="inspector flex-1 px-3 text-sm text-gray-800">
-                                            رضا مریدی
+                                            232425
                                         </div>
                                     </div>
                                     <div className="row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
                                         <div className="id w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            2
+                                            1
                                         </div>
                                         <div className="owner w-37.5 px-3 shrink-0 text-sm text-gray-800">
-                                            علی احمدی
+                                              عبد الله میرزایی
                                         </div>
                                         <div className="brand w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            کاترپیلار
+                                            09012345678
                                         </div>
                                         <div className="model w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            45x2
+                                            هپکو
                                         </div>
                                         <div className="inspection-date w-35 px-3 shrink-0 text-sm text-gray-800">
-                                            1405/05/10
+                                            26xz2
                                         </div>
                                         <div className="result w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            رد
+                                            1234
                                         </div>
                                         <div className="inspector flex-1 px-3 text-sm text-gray-800">
-                                            حسین کریمی
+                                            232425
                                         </div>
                                     </div>
                                     <div className="row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
                                         <div className="id w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            2
+                                            1
                                         </div>
                                         <div className="owner w-37.5 px-3 shrink-0 text-sm text-gray-800">
-                                            علی احمدی
+                                            محمد قادری
                                         </div>
                                         <div className="brand w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            کاترپیلار
+                                            09012345678
                                         </div>
                                         <div className="model w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            45x2
+                                            هپکو
                                         </div>
                                         <div className="inspection-date w-35 px-3 shrink-0 text-sm text-gray-800">
-                                            1405/05/10
+                                            26xz2
                                         </div>
                                         <div className="result w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            رد
+                                            1234
                                         </div>
                                         <div className="inspector flex-1 px-3 text-sm text-gray-800">
-                                            حسین کریمی
+                                            232425
                                         </div>
                                     </div>
                                     <div className="row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
                                         <div className="id w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            2
+                                            1
                                         </div>
                                         <div className="owner w-37.5 px-3 shrink-0 text-sm text-gray-800">
-                                            علی احمدی
+                                            محمد حسن تقدیری
                                         </div>
                                         <div className="brand w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            کاترپیلار
+                                            09012345678
                                         </div>
                                         <div className="model w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            45x2
+                                            هپکو
                                         </div>
                                         <div className="inspection-date w-35 px-3 shrink-0 text-sm text-gray-800">
-                                            1405/05/10
+                                            26xz2
                                         </div>
                                         <div className="result w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            رد
+                                            1234
                                         </div>
                                         <div className="inspector flex-1 px-3 text-sm text-gray-800">
-                                            حسین کریمی
-                                        </div>
-                                    </div>
-                                    <div className="row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
-                                        <div className="id w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            2
-                                        </div>
-                                        <div className="owner w-37.5 px-3 shrink-0 text-sm text-gray-800">
-                                            علی احمدی
-                                        </div>
-                                        <div className="brand w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            کاترپیلار
-                                        </div>
-                                        <div className="model w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            45x2
-                                        </div>
-                                        <div className="inspection-date w-35 px-3 shrink-0 text-sm text-gray-800">
-                                            1405/05/10
-                                        </div>
-                                        <div className="result w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            رد
-                                        </div>
-                                        <div className="inspector flex-1 px-3 text-sm text-gray-800">
-                                            حسین کریمی
+                                            232425
                                         </div>
                                     </div>
                                 </div>
