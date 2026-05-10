@@ -2,6 +2,7 @@
 
 import InputContainer from "@/components/inputContainer/InputContainer";
 import UserItem from "@/components/userItem/UserItem";
+import { useUsers } from "@/hooks/useUsers";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
@@ -9,6 +10,21 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 
 export default function UsersManagementPage() {
+    const { data: users, isLoading, isError, error } = useUsers();
+    const handleInfo = (user) => {
+        console.log("Info:", user);
+        // منطق نمایش اطلاعات
+    };
+
+    const handleEdit = (user) => {
+        console.log("Edit:", user);
+        // منطق ویرایش
+    };
+
+    const handleDelete = (user) => {
+        console.log("Delete:", user);
+        // منطق حذف
+    };
     return (
         <div className="users-management-page bg-white w-full min-h-svh pt-30 pb-5 px-10 lg:pr-90">
             <div className="main-content">
@@ -174,40 +190,42 @@ export default function UsersManagementPage() {
                         لیست کاربران ثبت شده
                     </h1>
                 </div>
+                <div className="users-list-container h-[50svh] overflow-y-auto mt-10">
+                    {isLoading && (
+                        <div className="p-8 text-center text-gray-600">
+                            در حال بارگذاری...
+                        </div>
+                    )}
 
-                <div className="users-list-contianer h-[50svh] overflow-y-auto mt-10">
-                    <div className="row flex flex-wrap">
-                        <div className="col w-full lg:w-1/2 p-2">
-                            <UserItem />
+                    {isError && (
+                        <div className="p-8 text-center text-red-600">
+                            خطا در دریافت اطلاعات: {error?.message}
                         </div>
-                        <div className="col w-full lg:w-1/2 p-2">
-                            <UserItem />
+                    )}
+
+                    {!isLoading && !isError && users?.length === 0 && (
+                        <div className="p-8 text-center text-gray-600">
+                            هیچ کاربری یافت نشد
                         </div>
-                        <div className="col w-full lg:w-1/2 p-2">
-                            <UserItem />
+                    )}
+
+                    {!isLoading && !isError && users && (
+                        <div className="row flex flex-wrap">
+                            {users.map((user) => (
+                                <div
+                                    key={user.id}
+                                    className="col w-full lg:w-1/2 p-2"
+                                >
+                                    <UserItem
+                                        user={user}
+                                        onInfo={handleInfo}
+                                        onEdit={handleEdit}
+                                        onDelete={handleDelete}
+                                    />
+                                </div>
+                            ))}
                         </div>
-                        <div className="col w-full lg:w-1/2 p-2">
-                            <UserItem />
-                        </div>
-                        <div className="col w-full lg:w-1/2 p-2">
-                            <UserItem />
-                        </div>
-                        <div className="col w-full lg:w-1/2 p-2">
-                            <UserItem />
-                        </div>
-                        <div className="col w-full lg:w-1/2 p-2">
-                            <UserItem />
-                        </div>
-                        <div className="col w-full lg:w-1/2 p-2">
-                            <UserItem />
-                        </div>
-                        <div className="col w-full lg:w-1/2 p-2">
-                            <UserItem />
-                        </div>
-                        <div className="col w-full lg:w-1/2 p-2">
-                            <UserItem />
-                        </div>
-                    </div>
+                    )}
                 </div>
             </div>
         </div>

@@ -2,6 +2,7 @@
 
 import InputContainer from "@/components/inputContainer/InputContainer";
 import TecnicalItem from "@/components/tecnicalItem/TecnicalItem";
+import { useCombines } from "@/hooks/useCombines";
 import {
     faSpinner,
     faLocationDot,
@@ -30,13 +31,35 @@ const initialComponentsData = () =>
         photo: null,
     }));
 
-export default function InspectionPage({ combineId = 1 }) {
+export default function InspectionPage() {
     const [loading, setLoading] = useState(false);
     const [locationLoading, setLocationLoading] = useState(false);
     const [location, setLocation] = useState(null);
     const [result, setResult] = useState("");
     const [overallNotes, setOverallNotes] = useState("");
     const [componentsData, setComponentsData] = useState(initialComponentsData);
+
+    const [searchInput, setSearchInput] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
+    const [combineId, setCombineId] = useState(null);
+
+    const {
+        data: combines,
+        isLoading,
+        isError,
+        error,
+    } = useCombines(searchTerm);
+
+    console.log(combines);
+
+    const showAllHandler = () => {
+        setSearchInput("");
+        setSearchTerm("");
+    };
+
+    const searchHandler = () => {
+        setSearchTerm(searchInput);
+    };
 
     const getLocation = () => {
         setLocationLoading(true);
@@ -112,6 +135,8 @@ export default function InspectionPage({ combineId = 1 }) {
     };
 
     const handleSubmit = async () => {
+        if (!combineId)
+            return toast.error("لطفاً ابتدا یک کمباین از لیست انتخاب کنید");
         if (!location)
             return toast.error("لطفاً ابتدا موقعیت مکانی خود را ثبت کنید");
         if (!result)
@@ -174,162 +199,163 @@ export default function InspectionPage({ combineId = 1 }) {
                     </div>
                     <div className="search-and-list-container mt-8">
                         <div className="search-container">
-                            <div className="row flex items-end gap-y-5">
-                                <div className="col w-full px-2">
+                            <div className="row flex flex-col sm:flex-row items-stretch sm:items-end gap-3">
+                                <div className="col flex-1 px-2">
                                     <InputContainer
+                                        type={"text"}
                                         title={"جستجو:"}
                                         placeHolder={
                                             "متن جستجو (مثلا نام مالک،سریال،شماره موتور،...)"
                                         }
+                                        onChange={(v) => {
+                                            setSearchInput(v);
+                                        }}
                                         dir={"rtl"}
                                     />
                                 </div>
-                                <div className="col pr-2">
+                                <div className="col px-2">
                                     <div className="btn-container flex items-center gap-2">
-                                        <button className="text-white cursor-pointer bg-emerald-600 whitespace-nowrap py-1 px-3 rounded-lg">
+                                        <button
+                                            onClick={searchHandler}
+                                            className="text-white cursor-pointer bg-emerald-600 whitespace-nowrap py-1 px-4 rounded-lg text-sm sm:text-base"
+                                        >
                                             جستجو
                                         </button>
-                                        <button className="text-white cursor-pointer bg-amber-500 whitespace-nowrap py-1 px-3 rounded-lg">
+                                        <button
+                                            onClick={showAllHandler}
+                                            className="text-white cursor-pointer bg-amber-500 whitespace-nowrap py-1 px-4 rounded-lg text-sm sm:text-base"
+                                        >
                                             نمایش همه
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div className="list-container rounded-lg mt-5 overflow-x-auto">
-                            <div className="table-wrapper min-w-200">
+                            <div className="table-wrapper min-w-max">
                                 <div className="table-header bg-emerald-600">
                                     <ul className="flex items-center">
-                                        <li className="w-25 py-4 px-3 shrink-0">
-                                            <p className="text text-white text-sm">
+                                        <li className="w-20 px-3 py-3 shrink-0">
+                                            <p className="text-white text-sm font-medium">
                                                 شناسه
                                             </p>
                                         </li>
-                                        <li className="w-37.5 py-4 px-3 shrink-0">
-                                            <p className="text text-white text-sm">
+                                        <li className="w-40 px-3 py-3 shrink-0">
+                                            <p className="text-white text-sm font-medium">
                                                 مالک
                                             </p>
                                         </li>
-                                        <li className="w-30 py-4 px-3 shrink-0">
-                                            <p className="text text-white text-sm">
+                                        <li className="w-32 px-3 py-3 shrink-0">
+                                            <p className="text-white text-sm font-medium">
                                                 تلفن
                                             </p>
                                         </li>
-                                        <li className="w-30 py-4 px-3 shrink-0">
-                                            <p className="text text-white text-sm">
+                                        <li className="w-28 px-3 py-3 shrink-0">
+                                            <p className="text-white text-sm font-medium">
                                                 برند
                                             </p>
                                         </li>
-                                        <li className="w-35 py-4 px-3 shrink-0">
-                                            <p className="text text-white text-sm">
+                                        <li className="w-28 px-3 py-3 shrink-0">
+                                            <p className="text-white text-sm font-medium">
                                                 مدل
                                             </p>
                                         </li>
-                                        <li className="w-25 py-4 px-3 shrink-0">
-                                            <p className="text text-white text-sm">
+                                        <li className="w-44 px-3 py-3 shrink-0">
+                                            <p className="text-white text-sm font-medium">
                                                 سریال (VIN)
                                             </p>
                                         </li>
-                                        <li className="flex-1 py-4 px-3">
-                                            <p className="text text-white text-sm">
+                                        <li className="w-36 px-3 py-3 shrink-0">
+                                            <p className="text-white text-sm font-medium">
                                                 شماره موتور
                                             </p>
                                         </li>
                                     </ul>
                                 </div>
                                 <div className="table-body bg-white border border-t-0 border-gray-300 rounded-lg rounded-t-none">
-                                    <div className="row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
-                                        <div className="id w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            1
+                                    {isLoading && (
+                                        <div className="p-8 text-center text-gray-600">
+                                            در حال بارگذاری...
                                         </div>
-                                        <div className="owner w-37.5 px-3 shrink-0 text-sm text-gray-800">
-                                            محمد حسینی
+                                    )}
+
+                                    {isError && (
+                                        <div className="p-8 text-center text-red-600">
+                                            خطا در دریافت اطلاعات:{" "}
+                                            {error?.message}
                                         </div>
-                                        <div className="brand w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            09012345678
-                                        </div>
-                                        <div className="model w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            هپکو
-                                        </div>
-                                        <div className="inspection-date w-35 px-3 shrink-0 text-sm text-gray-800">
-                                            26xz2
-                                        </div>
-                                        <div className="result w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            1234
-                                        </div>
-                                        <div className="inspector flex-1 px-3 text-sm text-gray-800">
-                                            232425
-                                        </div>
-                                    </div>
-                                    <div className="row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
-                                        <div className="id w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            1
-                                        </div>
-                                        <div className="owner w-37.5 px-3 shrink-0 text-sm text-gray-800">
-                                            عبد الله میرزایی
-                                        </div>
-                                        <div className="brand w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            09012345678
-                                        </div>
-                                        <div className="model w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            هپکو
-                                        </div>
-                                        <div className="inspection-date w-35 px-3 shrink-0 text-sm text-gray-800">
-                                            26xz2
-                                        </div>
-                                        <div className="result w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            1234
-                                        </div>
-                                        <div className="inspector flex-1 px-3 text-sm text-gray-800">
-                                            232425
-                                        </div>
-                                    </div>
-                                    <div className="row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
-                                        <div className="id w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            1
-                                        </div>
-                                        <div className="owner w-37.5 px-3 shrink-0 text-sm text-gray-800">
-                                            محمد قادری
-                                        </div>
-                                        <div className="brand w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            09012345678
-                                        </div>
-                                        <div className="model w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            هپکو
-                                        </div>
-                                        <div className="inspection-date w-35 px-3 shrink-0 text-sm text-gray-800">
-                                            26xz2
-                                        </div>
-                                        <div className="result w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            1234
-                                        </div>
-                                        <div className="inspector flex-1 px-3 text-sm text-gray-800">
-                                            232425
-                                        </div>
-                                    </div>
-                                    <div className="row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
-                                        <div className="id w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            1
-                                        </div>
-                                        <div className="owner w-37.5 px-3 shrink-0 text-sm text-gray-800">
-                                            محمد حسن تقدیری
-                                        </div>
-                                        <div className="brand w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            09012345678
-                                        </div>
-                                        <div className="model w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            هپکو
-                                        </div>
-                                        <div className="inspection-date w-35 px-3 shrink-0 text-sm text-gray-800">
-                                            26xz2
-                                        </div>
-                                        <div className="result w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            1234
-                                        </div>
-                                        <div className="inspector flex-1 px-3 text-sm text-gray-800">
-                                            232425
-                                        </div>
-                                    </div>
+                                    )}
+
+                                    {!isLoading &&
+                                        !isError &&
+                                        combines?.length === 0 && (
+                                            <div className="p-8 text-center text-gray-600">
+                                                هیچ کمباینی یافت نشد
+                                            </div>
+                                        )}
+
+                                    {!isLoading &&
+                                        !isError &&
+                                        combines?.map((combine) => (
+                                            <div
+                                                key={combine.id}
+                                                onClick={() =>
+                                                    setCombineId(combine.id)
+                                                }
+                                                className={`row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors cursor-pointer ${
+                                                    combineId === combine.id
+                                                        ? "bg-emerald-50 border-l-4 border-l-emerald-600"
+                                                        : ""
+                                                }`}
+                                            >
+                                                <div className="w-20 px-3 shrink-0 text-sm text-gray-800 truncate">
+                                                    {combine.id}
+                                                </div>
+                                                <div
+                                                    className="w-40 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                    title={combine.owner_name}
+                                                >
+                                                    {combine.owner_name}
+                                                </div>
+                                                <div
+                                                    className="w-32 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                    title={combine.owner_phone}
+                                                >
+                                                    {combine.owner_phone}
+                                                </div>
+                                                <div
+                                                    className="w-28 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                    title={combine.brand}
+                                                >
+                                                    {combine.brand}
+                                                </div>
+                                                <div
+                                                    className="w-28 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                    title={
+                                                        combine.combine_model
+                                                    }
+                                                >
+                                                    {combine.combine_model}
+                                                </div>
+                                                <div
+                                                    className="w-44 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                    title={
+                                                        combine.serial_number
+                                                    }
+                                                >
+                                                    {combine.serial_number}
+                                                </div>
+                                                <div
+                                                    className="w-36 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                    title={
+                                                        combine.engine_number
+                                                    }
+                                                >
+                                                    {combine.engine_number}
+                                                </div>
+                                            </div>
+                                        ))}
                                 </div>
                             </div>
                         </div>

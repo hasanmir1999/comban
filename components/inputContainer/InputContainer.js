@@ -12,7 +12,7 @@ export default function InputContainer({
 }) {
     const [eyeStat, setEyeStat] = useState(false);
     return (
-        <div className="input-container w-[95%] relative">
+        <div className="input-container w-full relative">
             <p className="text-[13px] font-semibold text-gray-900">{title}</p>
             <input
                 placeholder={placeHolder}

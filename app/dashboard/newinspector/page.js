@@ -1,5 +1,6 @@
 "use client";
 import InputContainer from "@/components/inputContainer/InputContainer";
+import { useInspectors } from "@/hooks/useInspector";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
@@ -16,6 +17,24 @@ export default function page() {
         engineer_code: "",
     });
     const [loading, setLoading] = useState(false);
+    const [searchInput, setSearchInput] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const {
+        data: inspectors,
+        isLoading,
+        isError,
+        error,
+    } = useInspectors(searchTerm);
+    const showAllHandler = () => {
+        setSearchInput("");
+        setSearchTerm("");
+    };
+
+    const searchHandler = () => {
+        setSearchTerm(searchInput);
+    };
+
     const createInspectorHandler = async () => {
         try {
             const res = await axios.post(
@@ -186,20 +205,32 @@ export default function page() {
                     </div>
                     <div className="search-and-list-container mt-8">
                         <div className="search-container">
-                            <div className="row flex items-end gap-y-5">
-                                <div className="col w-full px-2">
+                            <div className="row flex flex-col sm:flex-row items-stretch sm:items-end gap-3">
+                                <div className="col flex-1 px-2">
                                     <InputContainer
-                                        title={"جستجو بر اساس کد ملی:"}
-                                        placeHolder={"کد ملی را وارد کنید..."}
+                                        type={"text"}
+                                        title={"جستجو:"}
+                                        placeHolder={
+                                            "متن جستجو (مثلا نام مالک،سریال،شماره موتور،...)"
+                                        }
+                                        onChange={(v) => {
+                                            setSearchInput(v);
+                                        }}
                                         dir={"rtl"}
                                     />
                                 </div>
-                                <div className="col pr-2">
+                                <div className="col px-2">
                                     <div className="btn-container flex items-center gap-2">
-                                        <button className="text-white cursor-pointer bg-emerald-600 whitespace-nowrap py-1 px-3 rounded-lg">
+                                        <button
+                                            onClick={searchHandler}
+                                            className="text-white cursor-pointer bg-emerald-600 whitespace-nowrap py-1 px-4 rounded-lg text-sm sm:text-base"
+                                        >
                                             جستجو
                                         </button>
-                                        <button className="text-white cursor-pointer bg-amber-500 whitespace-nowrap py-1 px-3 rounded-lg">
+                                        <button
+                                            onClick={showAllHandler}
+                                            className="text-white cursor-pointer bg-amber-500 whitespace-nowrap py-1 px-4 rounded-lg text-sm sm:text-base"
+                                        >
                                             نمایش همه
                                         </button>
                                     </div>
@@ -243,106 +274,73 @@ export default function page() {
                                     </ul>
                                 </div>
                                 <div className="table-body bg-white border border-t-0 border-gray-300 rounded-lg rounded-t-none">
-                                    <div className="row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
-                                        <div className="id w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            1
+                                    {isLoading && (
+                                        <div className="p-8 text-center text-gray-600">
+                                            در حال بارگذاری...
                                         </div>
-                                        <div className="owner w-37.5 px-3 shrink-0 text-sm text-gray-800">
-                                            محمد حسن میر
+                                    )}
+
+                                    {isError && (
+                                        <div className="p-8 text-center text-red-600">
+                                            خطا در دریافت اطلاعات:{" "}
+                                            {error?.message}
                                         </div>
-                                        <div className="brand w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            هپکو
-                                        </div>
-                                        <div className="model w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            23e1
-                                        </div>
-                                        <div className="inspection-date w-35 px-3 shrink-0 text-sm text-gray-800">
-                                            1405/05/05
-                                        </div>
-                                        <div className="result w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            قبول
-                                        </div>
-                                    </div>
-                                    <div className="row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
-                                        <div className="id w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            2
-                                        </div>
-                                        <div className="owner w-37.5 px-3 shrink-0 text-sm text-gray-800">
-                                            علی احمدی
-                                        </div>
-                                        <div className="brand w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            کاترپیلار
-                                        </div>
-                                        <div className="model w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            45x2
-                                        </div>
-                                        <div className="inspection-date w-35 px-3 shrink-0 text-sm text-gray-800">
-                                            1405/05/10
-                                        </div>
-                                        <div className="result w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            رد
-                                        </div>
-                                    </div>
-                                    <div className="row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
-                                        <div className="id w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            2
-                                        </div>
-                                        <div className="owner w-37.5 px-3 shrink-0 text-sm text-gray-800">
-                                            علی احمدی
-                                        </div>
-                                        <div className="brand w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            کاترپیلار
-                                        </div>
-                                        <div className="model w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            45x2
-                                        </div>
-                                        <div className="inspection-date w-35 px-3 shrink-0 text-sm text-gray-800">
-                                            1405/05/10
-                                        </div>
-                                        <div className="result w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            رد
-                                        </div>
-                                    </div>
-                                    <div className="row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
-                                        <div className="id w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            2
-                                        </div>
-                                        <div className="owner w-37.5 px-3 shrink-0 text-sm text-gray-800">
-                                            علی احمدی
-                                        </div>
-                                        <div className="brand w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            کاترپیلار
-                                        </div>
-                                        <div className="model w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            45x2
-                                        </div>
-                                        <div className="inspection-date w-35 px-3 shrink-0 text-sm text-gray-800">
-                                            1405/05/10
-                                        </div>
-                                        <div className="result w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            رد
-                                        </div>
-                                    </div>
-                                    <div className="row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
-                                        <div className="id w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            2
-                                        </div>
-                                        <div className="owner w-37.5 px-3 shrink-0 text-sm text-gray-800">
-                                            علی احمدی
-                                        </div>
-                                        <div className="brand w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            کاترپیلار
-                                        </div>
-                                        <div className="model w-30 px-3 shrink-0 text-sm text-gray-800">
-                                            45x2
-                                        </div>
-                                        <div className="inspection-date w-35 px-3 shrink-0 text-sm text-gray-800">
-                                            1405/05/10
-                                        </div>
-                                        <div className="result w-25 px-3 shrink-0 text-sm text-gray-800">
-                                            رد
-                                        </div>
-                                    </div>
+                                    )}
+
+                                    {!isLoading &&
+                                        !isError &&
+                                        inspectors?.length === 0 && (
+                                            <div className="p-8 text-center text-gray-600">
+                                                هیچ بازرسی یافت نشد
+                                            </div>
+                                        )}
+
+                                    {!isLoading &&
+                                        !isError &&
+                                        inspectors?.map((inspector) => (
+                                            <div
+                                                key={inspector.id}
+                                                className={`row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors cursor-pointer`}
+                                            >
+                                                <div className="w-25 px-3 shrink-0 text-sm text-gray-800 truncate">
+                                                    {inspector.id}
+                                                </div>
+                                                <div
+                                                    className="w-37.5 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                    title={inspector.fullname}
+                                                >
+                                                    {inspector.fullname}
+                                                </div>
+                                                <div
+                                                    className="w-30 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                    title={inspector.phone}
+                                                >
+                                                    {inspector.phone}
+                                                </div>
+                                                <div
+                                                    className="w-30 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                    title={
+                                                        inspector.national_code
+                                                    }
+                                                >
+                                                    {inspector.national_code}
+                                                </div>
+                                                <div
+                                                    className="w-35 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                    title={
+                                                        inspector.engineer_code
+                                                    }
+                                                >
+                                                    {inspector.engineer_code}
+                                                </div>
+                                                <div
+                                                    className="w-25 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                    title={inspector.username}
+                                                >
+                                                    {inspector.username}
+                                                </div>
+                                            </div>
+                                        ))}
                                 </div>
                             </div>
                         </div>
