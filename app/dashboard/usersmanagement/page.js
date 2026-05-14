@@ -2,6 +2,8 @@
 
 import InputContainer from "@/components/inputContainer/InputContainer";
 import UserItem from "@/components/userItem/UserItem";
+import UserItemError from "@/components/userItemError/UserItemError";
+import UserItemLoading from "@/components/userItemLoading/UserItemLoading";
 import { useUsers } from "@/hooks/useUsers";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,6 +12,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 
 export default function UsersManagementPage() {
+    const [openMenuId, setOpenMenuId] = useState(null);
     const { data: users, isLoading, isError, error } = useUsers();
     const handleInfo = (user) => {
         console.log("Info:", user);
@@ -168,7 +171,7 @@ export default function UsersManagementPage() {
                             />
                         </div>
                     </div>
-                    <div className="btn-container flex justify-center items-center mt-5">
+                    <div className="btn-container flex justify-center items-center mt-5 whitespace-nowrap text-sm sm:text-base">
                         <button className="text-white flex justify-center items-center gap-2 cursor-pointer outline-none bg-emerald-600 rounded-lg py-1.75 px-20">
                             ثبت کاربر جدید
                             {0 ? (
@@ -191,17 +194,9 @@ export default function UsersManagementPage() {
                     </h1>
                 </div>
                 <div className="users-list-container h-[50svh] overflow-y-auto mt-10">
-                    {isLoading && (
-                        <div className="p-8 text-center text-gray-600">
-                            در حال بارگذاری...
-                        </div>
-                    )}
+                    {isLoading && <UserItemLoading />}
 
-                    {isError && (
-                        <div className="p-8 text-center text-red-600">
-                            خطا در دریافت اطلاعات: {error?.message}
-                        </div>
-                    )}
+                    {isError && <UserItemError />}
 
                     {!isLoading && !isError && users?.length === 0 && (
                         <div className="p-8 text-center text-gray-600">
@@ -210,7 +205,7 @@ export default function UsersManagementPage() {
                     )}
 
                     {!isLoading && !isError && users && (
-                        <div className="row flex flex-wrap">
+                        <div className="row flex flex-wrap py-6">
                             {users.map((user) => (
                                 <div
                                     key={user.id}
@@ -219,6 +214,8 @@ export default function UsersManagementPage() {
                                     <UserItem
                                         user={user}
                                         onInfo={handleInfo}
+                                        openMenuId={openMenuId}
+                                        setOpenMenuId={setOpenMenuId}
                                         onEdit={handleEdit}
                                         onDelete={handleDelete}
                                     />

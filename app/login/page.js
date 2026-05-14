@@ -8,6 +8,8 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
 import InputContainer from "@/components/inputContainer/InputContainer";
+import CopyRight from "@/components/copyRight/CopyRight";
+import LoginHeader from "@/components/loginHeader/LoginHeader";
 
 export default function LoginPage() {
     const router = useRouter()
@@ -48,8 +50,9 @@ export default function LoginPage() {
 
     return (
         <div className="bg-gray-50 h-svh w-full flex justify-center items-center">
+        <LoginHeader />
             <div className="form-box w-full h-full flex flex-col justify-center sm:w-110 sm:h-auto bg-white sm:rounded-lg shadow-sm">
-                <div className="form-container p-5">
+                <div className="form-container py-5 px-7">
                     <div className="logo flex justify-center">
                         <Image
                             width={100}
@@ -84,7 +87,7 @@ export default function LoginPage() {
                                 setFormData((p) => ({ ...p, password: v }))
                             }
                         />
-                        <div className="btn-container w-[95%] mt-2">
+                        <div className="btn-container w-full mt-2">
                             <button
                                 onClick={loginHandler}
                                 disabled={loading}
@@ -104,6 +107,7 @@ export default function LoginPage() {
                     </div>
                 </div>
             </div>
+            <CopyRight />
         </div>
     );
 }

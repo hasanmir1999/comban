@@ -24,7 +24,7 @@ export default function FilterOption({ title, optionItems }) {
                     </div>
                     <FontAwesomeIcon
                         icon={faChevronDown}
-                        className={`text-gray-800 transition-all duration-300 ${filterStat && "rotate-180"}`}
+                        className={`text-emerald-600 transition-all duration-300 ${filterStat && "rotate-180"}`}
                     />
                 </div>
                 <div

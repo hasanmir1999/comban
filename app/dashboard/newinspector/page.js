@@ -1,5 +1,7 @@
 "use client";
 import InputContainer from "@/components/inputContainer/InputContainer";
+import TabelError from "@/components/tabelError/TabelError";
+import TableLoading from "@/components/tableLoading/TableLoading";
 import { useInspectors } from "@/hooks/useInspector";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -206,7 +208,7 @@ export default function page() {
                     <div className="search-and-list-container mt-8">
                         <div className="search-container">
                             <div className="row flex flex-col sm:flex-row items-stretch sm:items-end gap-3">
-                                <div className="col flex-1 px-2">
+                                <div className="col flex-1">
                                     <InputContainer
                                         type={"text"}
                                         title={"جستجو:"}
@@ -219,7 +221,7 @@ export default function page() {
                                         dir={"rtl"}
                                     />
                                 </div>
-                                <div className="col px-2">
+                                <div className="col">
                                     <div className="btn-container flex items-center gap-2">
                                         <button
                                             onClick={searchHandler}
@@ -274,18 +276,9 @@ export default function page() {
                                     </ul>
                                 </div>
                                 <div className="table-body bg-white border border-t-0 border-gray-300 rounded-lg rounded-t-none">
-                                    {isLoading && (
-                                        <div className="p-8 text-center text-gray-600">
-                                            در حال بارگذاری...
-                                        </div>
-                                    )}
+                                    {isLoading && <TableLoading />}
 
-                                    {isError && (
-                                        <div className="p-8 text-center text-red-600">
-                                            خطا در دریافت اطلاعات:{" "}
-                                            {error?.message}
-                                        </div>
-                                    )}
+                                    {isError && <TabelError />}
 
                                     {!isLoading &&
                                         !isError &&

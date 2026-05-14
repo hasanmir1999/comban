@@ -1,6 +1,8 @@
 "use client";
 
 import InputContainer from "@/components/inputContainer/InputContainer";
+import TabelError from "@/components/tabelError/TabelError";
+import TableLoading from "@/components/tableLoading/TableLoading";
 import TecnicalItem from "@/components/tecnicalItem/TecnicalItem";
 import { useCombines } from "@/hooks/useCombines";
 import {
@@ -188,7 +190,7 @@ export default function InspectionPage() {
     return (
         <div className="inspection-page bg-white w-full min-h-svh pb-5 pt-30 px-10 lg:pr-90">
             <div className="main-content">
-                <div className="combine-list-container mt-8">
+                <div className="combine-list-container">
                     <div className="title flex items-center gap-2">
                         <div className="icon">
                             <div className="size-5 rounded-lg bg-emerald-600"></div>
@@ -200,7 +202,7 @@ export default function InspectionPage() {
                     <div className="search-and-list-container mt-8">
                         <div className="search-container">
                             <div className="row flex flex-col sm:flex-row items-stretch sm:items-end gap-3">
-                                <div className="col flex-1 px-2">
+                                <div className="col flex-1">
                                     <InputContainer
                                         type={"text"}
                                         title={"جستجو:"}
@@ -213,7 +215,7 @@ export default function InspectionPage() {
                                         dir={"rtl"}
                                     />
                                 </div>
-                                <div className="col px-2">
+                                <div className="col">
                                     <div className="btn-container flex items-center gap-2">
                                         <button
                                             onClick={searchHandler}
@@ -274,18 +276,9 @@ export default function InspectionPage() {
                                     </ul>
                                 </div>
                                 <div className="table-body bg-white border border-t-0 border-gray-300 rounded-lg rounded-t-none">
-                                    {isLoading && (
-                                        <div className="p-8 text-center text-gray-600">
-                                            در حال بارگذاری...
-                                        </div>
-                                    )}
+                                    {isLoading && <TableLoading />}
 
-                                    {isError && (
-                                        <div className="p-8 text-center text-red-600">
-                                            خطا در دریافت اطلاعات:{" "}
-                                            {error?.message}
-                                        </div>
-                                    )}
+                                    {isError && <TabelError />}
 
                                     {!isLoading &&
                                         !isError &&
@@ -361,13 +354,13 @@ export default function InspectionPage() {
                         </div>
                     </div>
                 </div>
-                <div className="title flex items-center gap-2 mt-8">
+                <div className="title flex items-center gap-2 mt-10">
                     <div className="icon">
                         <div className="size-5 rounded-lg bg-emerald-600"></div>
                     </div>
-                    <h1 className="text-lg text-gray-800 font-bold">
+                    <h5 className="text-lg text-gray-800 font-bold">
                         اطلاعات بازرسی فنی
-                    </h1>
+                    </h5>
                 </div>
 
                 <div className="form-container mt-8">
@@ -375,7 +368,7 @@ export default function InspectionPage() {
                         {/* نتیجه بازرسی */}
                         <div className="col w-full p-1">
                             <p className="text-[13px] font-semibold text-gray-900 mb-2">
-                                نتیجه بازرسی{" "}
+                                نتیجه بازرسی
                                 <span className="text-red-500">*</span>
                             </p>
                             <div className="flex items-center gap-4">
@@ -405,7 +398,7 @@ export default function InspectionPage() {
                         {/* موقعیت مکانی */}
                         <div className="col w-full p-1">
                             <p className="text-[13px] font-semibold text-gray-900 mb-2">
-                                موقعیت مکانی{" "}
+                                موقعیت مکانی
                                 <span className="text-red-500">*</span>
                             </p>
                             <div className="flex items-center gap-3">

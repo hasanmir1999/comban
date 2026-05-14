@@ -12,6 +12,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useStatistics } from "@/hooks/useStatistics";
 import { useInspections } from "@/hooks/useInspections";
+import TableLoading from "@/components/tableLoading/TableLoading";
+import TabelError from "@/components/tabelError/TabelError";
 
 export default function StatisticsPage() {
     const { data: statistics, isLoading: statsLoading } = useStatistics();
@@ -223,18 +225,9 @@ export default function StatisticsPage() {
                                 </div>
 
                                 <div className="table-body bg-white border border-t-0 border-gray-300 rounded-lg rounded-t-none">
-                                    {isLoading && (
-                                        <div className="p-8 text-center text-gray-600">
-                                            در حال بارگذاری...
-                                        </div>
-                                    )}
+                                    {isLoading && <TableLoading />}
 
-                                    {isError && (
-                                        <div className="p-8 text-center text-red-600">
-                                            خطا در دریافت اطلاعات:{" "}
-                                            {error?.message}
-                                        </div>
-                                    )}
+                                    {isError && <TabelError />}
 
                                     {!isLoading &&
                                         !isError &&

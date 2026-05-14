@@ -13,7 +13,7 @@ export default function DateFilterOption({ title, onChange }) {
     const handleDateChange = (date) => {
         setSelectedDate(date);
         if (onChange) {
-            onChange(date?.format("YYYY/MM/DD"));
+            onChange(date?.format("YYYY-MM-DD"));
         }
     };
 
@@ -34,7 +34,7 @@ export default function DateFilterOption({ title, onChange }) {
                     inputClass="w-full border border-gray-300 p-2 rounded-lg text-gray-800 cursor-pointer focus:outline-none focus:border-emerald-600"
                     containerClassName="w-full"
                     placeholder="انتخاب تاریخ"
-                    format="YYYY/MM/DD"
+                    format="YYYY-MM-DD"
                     render={(value, openCalendar) => (
                         <div
                             onClick={openCalendar}
@@ -45,7 +45,7 @@ export default function DateFilterOption({ title, onChange }) {
                             </div>
                             <FontAwesomeIcon
                                 icon={faCalendar}
-                                className="text-gray-800"
+                                className="text-emerald-600"
                             />
                         </div>
                     )}
