@@ -2,13 +2,14 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ResUserInfoBoxLoading from "../resUserInfoBoxLoading/ResUserInfoBoxLoading";
 import ResUserInfoBoxError from "../resUserInfoBoxError/ResUserInfoBoxError";
+import useInfoQuery from "@/hooks/useInfo";
 
 export default function ResUserInfoBox() {
-    let status = "error";
+    const { data, status } = useInfoQuery();
 
     return (
         <>
-            {status === "loading" ? (
+            {status === "pending" ? (
                 <ResUserInfoBoxLoading />
             ) : status === "success" ? (
                 <div className="user-info-container p-2 rounded-lg gap-3 border border-emerald-600 flex items-center w-full">
@@ -16,9 +17,11 @@ export default function ResUserInfoBox() {
                         <FontAwesomeIcon icon={faUser} />
                     </div>
                     <div className="text">
-                        <h5 className="username text-gray-900">محمد حسن میر</h5>
+                        <h5 className="username text-gray-900">
+                            {data.fullname}
+                        </h5>
                         <p className="role text-xs text-gray-700">
-                            ناظر کمباین
+                            {data.role_name}
                         </p>
                     </div>
                 </div>
