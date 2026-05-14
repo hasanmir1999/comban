@@ -4,7 +4,7 @@ import InputContainer from "@/components/inputContainer/InputContainer";
 import UserItem from "@/components/userItem/UserItem";
 import UserItemError from "@/components/userItemError/UserItemError";
 import UserItemLoading from "@/components/userItemLoading/UserItemLoading";
-import { useUsers } from "@/hooks/useUsers";
+import useUsers from "@/hooks/useUsers";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
@@ -13,7 +13,9 @@ import toast from "react-hot-toast";
 
 export default function UsersManagementPage() {
     const [openMenuId, setOpenMenuId] = useState(null);
-    const { data: users, isLoading, isError, error } = useUsers();
+
+    const { data, status } = useUsers();
+
     const handleInfo = (user) => {
         console.log("Info:", user);
         // منطق نمایش اطلاعات
@@ -194,19 +196,33 @@ export default function UsersManagementPage() {
                     </h1>
                 </div>
                 <div className="users-list-container h-[50svh] overflow-y-auto mt-10">
-                    {isLoading && <UserItemLoading />}
-
-                    {isError && <UserItemError />}
-
-                    {!isLoading && !isError && users?.length === 0 && (
-                        <div className="p-8 text-center text-gray-600">
-                            هیچ کاربری یافت نشد
-                        </div>
-                    )}
-
-                    {!isLoading && !isError && users && (
-                        <div className="row flex flex-wrap py-6">
-                            {users.map((user) => (
+                    <div className="row flex flex-wrap py-6">
+                        {status === "pending" ? (
+                            <>
+                                <div className="col w-full lg:w-1/2 p-2">
+                                    <UserItemLoading />
+                                </div>
+                                <div className="col w-full lg:w-1/2 p-2">
+                                    <UserItemLoading />
+                                </div>
+                                <div className="col w-full lg:w-1/2 p-2">
+                                    <UserItemLoading />
+                                </div>
+                                <div className="col w-full lg:w-1/2 p-2">
+                                    <UserItemLoading />
+                                </div>
+                                <div className="col w-full lg:w-1/2 p-2">
+                                    <UserItemLoading />
+                                </div>
+                                <div className="col w-full lg:w-1/2 p-2">
+                                    <UserItemLoading />
+                                </div>
+                                <div className="col w-full lg:w-1/2 p-2">
+                                    <UserItemLoading />
+                                </div>
+                            </>
+                        ) : status === "success" ? (
+                            data.users.map((user) => (
                                 <div
                                     key={user.id}
                                     className="col w-full lg:w-1/2 p-2"
@@ -220,9 +236,15 @@ export default function UsersManagementPage() {
                                         onDelete={handleDelete}
                                     />
                                 </div>
-                            ))}
-                        </div>
-                    )}
+                            ))
+                        ) : (
+                            status === "error" && (
+                                <div className="col w-full p-2">
+                                    <UserItemError />
+                                </div>
+                            )
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

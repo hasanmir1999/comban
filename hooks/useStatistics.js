@@ -1,9 +1,10 @@
 // hooks/useStatistics.js
+import api from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const fetchStatistics = async () => {
-    const { data } = await axios.get("https://lotexev.ir/api-v1/statistics");
+    const { data } = await api.get("/api-v1/dashboard/stats");
     return data;
 };
 

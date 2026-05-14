@@ -16,7 +16,7 @@ import TableLoading from "@/components/tableLoading/TableLoading";
 import TabelError from "@/components/tabelError/TabelError";
 
 export default function StatisticsPage() {
-    const { data: statistics, isLoading: statsLoading } = useStatistics();
+    const { data: statistics, status: statisticsStatus } = useStatistics();
     const { data: inspections, isLoading, isError, error } = useInspections();
 
     const [filters, setFilters] = useState({
@@ -60,11 +60,8 @@ export default function StatisticsPage() {
                             >
                                 <StatisticItem
                                     title={"تعداد کل کمباین ها"}
-                                    count={
-                                        statsLoading
-                                            ? "..."
-                                            : statistics?.total_combines || 0
-                                    }
+                                    statisticsStatus={statisticsStatus}
+                                    count={statistics?.combines}
                                     icon={<FontAwesomeIcon icon={faTractor} />}
                                 />
                             </div>
@@ -74,11 +71,8 @@ export default function StatisticsPage() {
                             >
                                 <StatisticItem
                                     title={"تعداد کل بازرسی ها"}
-                                    count={
-                                        statsLoading
-                                            ? "..."
-                                            : statistics?.total_inspections || 0
-                                    }
+                                    statisticsStatus={statisticsStatus}
+                                    count={statistics?.inspections}
                                     icon={
                                         <FontAwesomeIcon
                                             icon={faClipboardCheck}
@@ -92,11 +86,8 @@ export default function StatisticsPage() {
                             >
                                 <StatisticItem
                                     title={"تعداد کل کاربران"}
-                                    count={
-                                        statsLoading
-                                            ? "..."
-                                            : statistics?.total_users || 0
-                                    }
+                                    statisticsStatus={statisticsStatus}
+                                    count={statistics?.users}
                                     icon={<FontAwesomeIcon icon={faUsers} />}
                                 />
                             </div>

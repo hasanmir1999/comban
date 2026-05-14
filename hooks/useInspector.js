@@ -1,15 +1,13 @@
 // hooks/useInspectors.js
 import { useQuery } from "@tanstack/react-query";
+import api from "@/lib/axios";
 
 const fetchInspectors = async (searchTerm = "") => {
-    const response = await fetch(
-        `https://lotexev.ir/api-v1/inspectors/inspectors-list?search=${searchTerm}`
+    const res = await api.get(
+        `/api-v1/inspectors/inspectors-list?search=${searchTerm}`
     );
-    if (!response.ok) {
-        throw new Error("خطا در دریافت لیست بازرسان");
-    }
-    const data = await response.json();
-    return data.inspectors;
+
+    return res.data;
 };
 
 export const useInspectors = (searchTerm = "") => {

@@ -1,5 +1,5 @@
-export default function StatisticItem({ title, count, icon }) {
-    let status = "loading";
+export default function StatisticItem({ title, count, icon , statisticsStatus }) {
+
 
     return (
         <div className="statistic-item bg-white rounded-lg p-4 flex items-center justify-between gap-2 border border-emerald-600">
@@ -7,12 +7,12 @@ export default function StatisticItem({ title, count, icon }) {
                 <div className="title font-semibold text-gray-800 whitespace-nowrap">
                     {title}
                 </div>
-                {status === "loading" ? (
+                {statisticsStatus === "pending" ? (
                     <div className="h-4 mt-1.5 bg-gray-300 rounded w-8 animate-pulse"></div>
-                ) : status === "success" ? (
+                ) : statisticsStatus === "success" ? (
                     <div className="count mt-1.5 text-sm text-gray-600">{count}</div>
                 ) : (
-                    status === "error" && (
+                    statisticsStatus === "error" && (
                         <div className="error mt-1.5 text-xs text-red-500">
                             خطا در دریافت اطلاعات
                         </div>

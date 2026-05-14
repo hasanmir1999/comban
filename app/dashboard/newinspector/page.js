@@ -1,6 +1,7 @@
 "use client";
 import InputContainer from "@/components/inputContainer/InputContainer";
 import TabelError from "@/components/tabelError/TabelError";
+import TabelNotFound from "@/components/tabelNotFound/TabelNotFound";
 import TableLoading from "@/components/tableLoading/TableLoading";
 import { useInspectors } from "@/hooks/useInspector";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
@@ -22,12 +23,8 @@ export default function page() {
     const [searchInput, setSearchInput] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
 
-    const {
-        data: inspectors,
-        isLoading,
-        isError,
-        error,
-    } = useInspectors(searchTerm);
+    const { data, status } = useInspectors(searchTerm);
+
     const showAllHandler = () => {
         setSearchInput("");
         setSearchTerm("");
@@ -276,64 +273,68 @@ export default function page() {
                                     </ul>
                                 </div>
                                 <div className="table-body bg-white border border-t-0 border-gray-300 rounded-lg rounded-t-none">
-                                    {isLoading && <TableLoading />}
-
-                                    {isError && <TabelError />}
-
-                                    {!isLoading &&
-                                        !isError &&
-                                        inspectors?.length === 0 && (
-                                            <div className="p-8 text-center text-gray-600">
-                                                هیچ بازرسی یافت نشد
-                                            </div>
-                                        )}
-
-                                    {!isLoading &&
-                                        !isError &&
-                                        inspectors?.map((inspector) => (
-                                            <div
-                                                key={inspector.id}
-                                                className={`row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors cursor-pointer`}
-                                            >
-                                                <div className="w-25 px-3 shrink-0 text-sm text-gray-800 truncate">
-                                                    {inspector.id}
-                                                </div>
+                                    {status === "pending" ? (
+                                        <TableLoading />
+                                    ) : status === "success" ? (
+                                        data.inspectors.length === 0 ? (
+                                            <TabelNotFound />
+                                        ) : (
+                                            data.inspectors.map((inspector) => (
                                                 <div
-                                                    className="w-37.5 px-3 shrink-0 text-sm text-gray-800 truncate"
-                                                    title={inspector.fullname}
+                                                    key={inspector.id}
+                                                    className={`row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors cursor-pointer`}
                                                 >
-                                                    {inspector.fullname}
+                                                    <div className="w-25 px-3 shrink-0 text-sm text-gray-800 truncate">
+                                                        {inspector.id}
+                                                    </div>
+                                                    <div
+                                                        className="w-37.5 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                        title={
+                                                            inspector.fullname
+                                                        }
+                                                    >
+                                                        {inspector.fullname}
+                                                    </div>
+                                                    <div
+                                                        className="w-30 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                        title={inspector.phone}
+                                                    >
+                                                        {inspector.phone}
+                                                    </div>
+                                                    <div
+                                                        className="w-30 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                        title={
+                                                            inspector.national_code
+                                                        }
+                                                    >
+                                                        {
+                                                            inspector.national_code
+                                                        }
+                                                    </div>
+                                                    <div
+                                                        className="w-35 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                        title={
+                                                            inspector.engineer_code
+                                                        }
+                                                    >
+                                                        {
+                                                            inspector.engineer_code
+                                                        }
+                                                    </div>
+                                                    <div
+                                                        className="w-25 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                        title={
+                                                            inspector.username
+                                                        }
+                                                    >
+                                                        {inspector.username}
+                                                    </div>
                                                 </div>
-                                                <div
-                                                    className="w-30 px-3 shrink-0 text-sm text-gray-800 truncate"
-                                                    title={inspector.phone}
-                                                >
-                                                    {inspector.phone}
-                                                </div>
-                                                <div
-                                                    className="w-30 px-3 shrink-0 text-sm text-gray-800 truncate"
-                                                    title={
-                                                        inspector.national_code
-                                                    }
-                                                >
-                                                    {inspector.national_code}
-                                                </div>
-                                                <div
-                                                    className="w-35 px-3 shrink-0 text-sm text-gray-800 truncate"
-                                                    title={
-                                                        inspector.engineer_code
-                                                    }
-                                                >
-                                                    {inspector.engineer_code}
-                                                </div>
-                                                <div
-                                                    className="w-25 px-3 shrink-0 text-sm text-gray-800 truncate"
-                                                    title={inspector.username}
-                                                >
-                                                    {inspector.username}
-                                                </div>
-                                            </div>
-                                        ))}
+                                            ))
+                                        )
+                                    ) : (
+                                        status === "error" && <TabelError />
+                                    )}
                                 </div>
                             </div>
                         </div>

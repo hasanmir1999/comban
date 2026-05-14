@@ -12,11 +12,69 @@ import useSidebarStore from "@/store/useSideBarStore";
 import ResUserInfoBox from "../resUserInfoBox/ResUserInfoBox";
 import { usePathname } from "next/navigation";
 import { logout } from "@/utils/logout";
+import { decodeJWT } from "@/utils/decodeJWT";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 export default function ResSideBar() {
     const route = usePathname();
     const sideBarStat = useSidebarStore((s) => s.sideBarStat);
     const closeSidebar = useSidebarStore((s) => s.closeSidebar);
+    const [allowedRoutes, setAllowedRoutes] = useState([]);
+
+    useEffect(() => {
+        const token = Cookies.get("access_token");
+        if (token) {
+            const payload = decodeJWT(token);
+            if (payload?.user_permissions) {
+                // استخراج روت‌های مجاز
+                const routes = payload.user_permissions
+                    .filter(per => per.startsWith("view_"))
+                    .map(per => per.replace("view_", ""));
+                setAllowedRoutes(routes);
+            }
+        }
+    }, []);
+
+    // لیست تمام آیتم‌های منو
+    const menuItems = [
+        {
+            href: "/dashboard/newcombine",
+            text: "ثبت کمباین جدید",
+            icon: faPlus,
+            route: "newcombine"
+        },
+        {
+            href: "/dashboard/inspection",
+            text: "بازرسی فنی",
+            icon: faWrench,
+            route: "inspection"
+        },
+        {
+            href: "/dashboard/statistics",
+            text: "گزارش گیری و لیست کمباین ها",
+            icon: faChartLine,
+            route: "statistics"
+        },
+        {
+            href: "/dashboard/newinspector",
+            text: "ثبت ناظر",
+            icon: faUserPlus,
+            route: "newinspector"
+        },
+        {
+            href: "/dashboard/usersmanagement",
+            text: "مدیریت کاربران",
+            icon: faUsers,
+            route: "usersmanagement"
+        }
+    ];
+
+    // فیلتر کردن آیتم‌های منو بر اساس دسترسی
+    const visibleMenuItems = menuItems.filter(item => 
+        allowedRoutes.includes(item.route)
+    );
+
     return (
         <div
             className={`res-side-bar lg:hidden transition-all duration-300 ${sideBarStat ? "translate-x-0" : "translate-x-80"} fixed top-0 right-0 bg-white h-full w-70 border-l border-gray-300 flex flex-col`}
@@ -26,96 +84,26 @@ export default function ResSideBar() {
             </div>
             <nav className="mt-10 sm:mt-30 flex-1 overflow-y-auto">
                 <ul className="side-bar-list-item">
-                    <li className="px-3 py-2">
-                        <Link
-                            href={"/dashboard/newcombine"}
-                            onClick={closeSidebar}
-                            className={`item-container group ${route === "/dashboard/newcombine" && "bg-emerald-600"} flex gap-3 justify-between text-gray-800 items-center p-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg`}
-                        >
-                            <div
-                                className={`text text-sm ${route === "/dashboard/newcombine" && "text-white"} group-hover:text-white transition-all duration-300`}
+                    {visibleMenuItems.map((item) => (
+                        <li key={item.route} className="px-3 py-2">
+                            <Link
+                                href={item.href}
+                                onClick={closeSidebar}
+                                className={`item-container group ${route === item.href && "bg-emerald-600"} flex gap-3 justify-between text-gray-800 items-center p-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg`}
                             >
-                                ثبت کمباین جدید
-                            </div>
-                            <div
-                                className={`icon ${route === "/dashboard/newcombine" && "text-white"} group-hover:text-white transition-all duration-300 size-5`}
-                            >
-                                <FontAwesomeIcon icon={faPlus} />
-                            </div>
-                        </Link>
-                    </li>
-                    <li className="px-3 py-2">
-                        <Link
-                            href={"/dashboard/inspection"}
-                            onClick={closeSidebar}
-                            className={`item-container group ${route === "/dashboard/inspection" && "bg-emerald-600"} flex gap-3 justify-between text-gray-800 items-center p-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg`}
-                        >
-                            <div
-                                className={`text ${route === "/dashboard/inspection" && "text-white"} text-sm group-hover:text-white transition-all duration-300`}
-                            >
-                                بازرسی فنی
-                            </div>
-                            <div
-                                className={`icon ${route === "/dashboard/inspection" && "text-white"} group-hover:text-white transition-all duration-300 size-5`}
-                            >
-                                <FontAwesomeIcon icon={faWrench} />
-                            </div>
-                        </Link>
-                    </li>
-                    <li className="px-3 py-2">
-                        <Link
-                            href={"/dashboard/statistics"}
-                            onClick={closeSidebar}
-                            className={`item-container group ${route === "/dashboard/statistics" && "bg-emerald-600"} flex gap-3 justify-between text-gray-800 items-center p-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg`}
-                        >
-                            <div
-                                className={`text ${route === "/dashboard/statistics" && "text-white"} text-sm group-hover:text-white transition-all duration-300`}
-                            >
-                                گزارش گیری و لیست کمباین ها
-                            </div>
-                            <div
-                                className={`icon ${route === "/dashboard/statistics" && "text-white"} group-hover:text-white transition-all duration-300 size-5`}
-                            >
-                                <FontAwesomeIcon icon={faChartLine} />
-                            </div>
-                        </Link>
-                    </li>
-                    <li className="px-3 py-2">
-                        <Link
-                            href={"/dashboard/newinspector"}
-                            onClick={closeSidebar}
-                            className={`item-container group ${route === "/dashboard/newinspector" && "bg-emerald-600"} flex gap-3 justify-between text-gray-800 items-center p-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg`}
-                        >
-                            <div
-                                className={`text ${route === "/dashboard/newinspector" && "text-white"} text-sm group-hover:text-white transition-all duration-300`}
-                            >
-                                ثبت ناظر
-                            </div>
-                            <div
-                                className={`icon ${route === "/dashboard/newinspector" && "text-white"} group-hover:text-white transition-all duration-300 size-5`}
-                            >
-                                <FontAwesomeIcon icon={faUserPlus} />
-                            </div>
-                        </Link>
-                    </li>
-                    <li className="px-3 py-2">
-                        <Link
-                            href={"/dashboard/usersmanagement"}
-                            onClick={closeSidebar}
-                            className={`item-container ${route === "/dashboard/usersmanagement" && "bg-emerald-600"} transition-all duration-300 group flex gap-3 justify-between text-gray-800 items-center p-2.5 hover:bg-emerald-600 rounded-lg`}
-                        >
-                            <div
-                                className={`text text-sm ${route === "/dashboard/usersmanagement" && "text-white"} group-hover:text-white transition-all duration-300`}
-                            >
-                                مدیریت کاربران
-                            </div>
-                            <div
-                                className={`icon ${route === "/dashboard/usersmanagement" && "text-white"} group-hover:text-white transition-all duration-300 size-5`}
-                            >
-                                <FontAwesomeIcon icon={faUsers} />
-                            </div>
-                        </Link>
-                    </li>
+                                <div
+                                    className={`text text-sm ${route === item.href && "text-white"} group-hover:text-white transition-all duration-300`}
+                                >
+                                    {item.text}
+                                </div>
+                                <div
+                                    className={`icon ${route === item.href && "text-white"} group-hover:text-white transition-all duration-300 size-5`}
+                                >
+                                    <FontAwesomeIcon icon={item.icon} />
+                                </div>
+                            </Link>
+                        </li>
+                    ))}
                 </ul>
             </nav>
             <div className="logout-container mt-auto">

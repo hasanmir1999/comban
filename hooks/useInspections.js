@@ -1,4 +1,4 @@
-// hooks/useInspections.js
+
 import { useQuery } from "@tanstack/react-query";
 
 export const useInspections = () => {

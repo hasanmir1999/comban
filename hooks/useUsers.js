@@ -1,16 +1,16 @@
-// hooks/useUsers.js
+
+import api from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 
-export const useUsers = () => {
+const getUsers = async () => {
+    const res = await api.get("/api-v1/read-users");
+    console.log(res)
+    return res.data;
+};
+
+export default function useUsers() {
     return useQuery({
         queryKey: ["users"],
-        queryFn: async () => {
-            const response = await fetch("https://lotexev.ir/api-v1/read-users");
-            if (!response.ok) {
-                throw new Error("خطا در دریافت لیست کاربران");
-            }
-            const data = await response.json();
-            return data.users;
-        },
+        queryFn: () => getUsers(),
     });
 };
