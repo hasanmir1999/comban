@@ -1,4 +1,5 @@
-// components/UserItem.jsx
+"use client";
+import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faUser,
@@ -9,19 +10,52 @@ import {
     faPlay,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import Link from "next/link";
+import api from "@/lib/axios";
 
-export default function UserItem({
-    user,
-    onInfo,
-    onEdit,
-    onDelete,
-    openMenuId,
-    setOpenMenuId,
-}) {
+export default function UserItem({ user, openMenuId, setOpenMenuId }) {
     const btnMenuStatus = openMenuId === user.id;
     const toggleMenu = () => {
         setOpenMenuId(btnMenuStatus ? null : user.id);
     };
+    const handleDelete = async () => {
+        const result = await Swal.fire({
+            title: "آیا مطمئن هستید؟",
+            text: "این عملیات قابل بازگشت نیست!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "تایید",
+            cancelButtonText: "لغو",
+            reverseButtons: true,
+        });
+
+        if (result.isConfirmed) {
+            try {
+                await api.delete(`/api-v1/delete-user/${user.id}`);
+
+                Swal.fire({
+                    title: "حذف شد!",
+                    text: "کاربر با موفقیت حذف شد.",
+                    icon: "success",
+                    confirmButtonText: "باشه",
+                });
+            } catch (error) {
+                Swal.fire({
+                    title: "خطا!",
+                    text: "مشکلی در حذف کاربر پیش آمد.",
+                    icon: "error",
+                    confirmButtonText: "باشه",
+                });
+            }
+        }
+    };
+
+    // const handelDelete = async ()=>{
+    //     const res = await api.delete(`/api-v1/delete-user/${user.id}`)
+    // }
+
     return (
         <>
             {btnMenuStatus && (
@@ -36,10 +70,10 @@ export default function UserItem({
                         <FontAwesomeIcon icon={faUser} />
                     </div>
                     <div className="name-role flex flex-col gap-1 min-w-0">
-                        <p className="name text-gray-800 text-sm sm:text-base truncate">
-                            {user.fullname}
+                        <p className="name text-gray-800 text-xs sm:text-sm truncate">
+                            {`${user.name + " " + user.lastname}`}
                         </p>
-                        <p className="role text-gray-400 text-xs sm:text-sm truncate">
+                        <p className="role text-gray-400 text-[10px] sm:text-xs truncate">
                             {user.role}
                         </p>
                     </div>
@@ -57,19 +91,19 @@ export default function UserItem({
                             icon={faPlay}
                         />
                         <button
-                            onClick={() => onInfo?.(user)}
+                            // onClick={onInfo?.(user)}
                             className="info-btn cursor-pointer flex justify-center items-center text-blue-500"
                         >
                             <FontAwesomeIcon icon={faInfoCircle} />
                         </button>
-                        <button
-                            onClick={() => onEdit?.(user)}
+                        <Link
+                            href={`/dashboard/usersmanagement/edituser/${user.id}`}
                             className="edit-btn cursor-pointer flex justify-center items-center text-yellow-500"
                         >
                             <FontAwesomeIcon icon={faPenToSquare} />
-                        </button>
+                        </Link>
                         <button
-                            onClick={() => onDelete?.(user)}
+                            onClick={handleDelete}
                             className="delete-btn cursor-pointer flex justify-center items-center text-red-500"
                         >
                             <FontAwesomeIcon icon={faTrash} />
@@ -79,19 +113,19 @@ export default function UserItem({
                 <div className="btns-container hidden sm:flex items-center gap-2">
                     <button
                         onClick={() => onInfo?.(user)}
-                        className="info-btn cursor-pointer flex justify-center items-center bg-blue-500 hover:bg-blue-600 text-white size-9 rounded-lg transition-colors"
+                        className="info-btn cursor-pointer flex justify-center items-center bg-blue-500 hover:bg-blue-600 text-white size-8 rounded-lg transition-colors"
                     >
                         <FontAwesomeIcon icon={faInfoCircle} />
                     </button>
-                    <button
-                        onClick={() => onEdit?.(user)}
-                        className="edit-btn cursor-pointer flex justify-center items-center bg-yellow-500 hover:bg-yellow-600 text-white size-9 rounded-lg transition-colors"
+                    <Link
+                        href={`/dashboard/usersmanagement/edituser/${user.id}`}
+                        className="edit-btn cursor-pointer flex justify-center items-center bg-yellow-500 hover:bg-yellow-600 text-white size-8 rounded-lg transition-colors"
                     >
                         <FontAwesomeIcon icon={faPenToSquare} />
-                    </button>
+                    </Link>
                     <button
-                        onClick={() => onDelete?.(user)}
-                        className="delete-btn cursor-pointer flex justify-center items-center bg-red-500 hover:bg-red-600 text-white size-9 rounded-lg transition-colors"
+                        onClick={handleDelete}
+                        className="delete-btn cursor-pointer flex justify-center items-center bg-red-500 hover:bg-red-600 text-white size-8 rounded-lg transition-colors"
                     >
                         <FontAwesomeIcon icon={faTrash} />
                     </button>

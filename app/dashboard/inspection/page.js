@@ -45,14 +45,7 @@ export default function InspectionPage() {
     const [searchTerm, setSearchTerm] = useState("");
     const [combineId, setCombineId] = useState(null);
 
-    const {
-        data: combines,
-        isLoading,
-        isError,
-        error,
-    } = useCombines(searchTerm);
-
-    console.log(combines);
+    const { data: combines, status: combinesStatus } = useCombines(searchTerm);
 
     const showAllHandler = () => {
         setSearchInput("");
@@ -276,20 +269,9 @@ export default function InspectionPage() {
                                     </ul>
                                 </div>
                                 <div className="table-body bg-white border border-t-0 border-gray-300 rounded-lg rounded-t-none">
-                                    {isLoading && <TableLoading />}
-
-                                    {isError && <TabelError />}
-
-                                    {!isLoading &&
-                                        !isError &&
-                                        combines?.length === 0 && (
-                                            <div className="p-8 text-center text-gray-600">
-                                                هیچ کمباینی یافت نشد
-                                            </div>
-                                        )}
-
-                                    {!isLoading &&
-                                        !isError &&
+                                    {combinesStatus === "pending" ? (
+                                        <TableLoading />
+                                    ) : combinesStatus === "success" ? (
                                         combines?.map((combine) => (
                                             <div
                                                 key={combine.id}
@@ -348,12 +330,18 @@ export default function InspectionPage() {
                                                     {combine.engine_number}
                                                 </div>
                                             </div>
-                                        ))}
+                                        ))
+                                    ) : (
+                                        combinesStatus === "error" && (
+                                            <TabelError />
+                                        )
+                                    )}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div className="title flex items-center gap-2 mt-10">
                     <div className="icon">
                         <div className="size-5 rounded-lg bg-emerald-600"></div>
@@ -365,7 +353,6 @@ export default function InspectionPage() {
 
                 <div className="form-container mt-8">
                     <div className="row flex flex-wrap gap-y-5">
-                        {/* نتیجه بازرسی */}
                         <div className="col w-full p-1">
                             <p className="text-[13px] font-semibold text-gray-900 mb-2">
                                 نتیجه بازرسی

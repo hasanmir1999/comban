@@ -23,7 +23,6 @@ export default function SideBar() {
         if (token) {
             const payload = decodeJWT(token);
             if (payload?.user_permissions) {
-                // استخراج روت‌های مجاز
                 const routes = payload.user_permissions
                     .filter(per => per.startsWith("view_"))
                     .map(per => per.replace("view_", ""));
@@ -32,7 +31,7 @@ export default function SideBar() {
         }
     }, []);
 
-    // لیست تمام آیتم‌های منو
+
     const menuItems = [
         {
             href: "/dashboard/newcombine",
@@ -66,7 +65,6 @@ export default function SideBar() {
         }
     ];
 
-    // فیلتر کردن آیتم‌های منو بر اساس دسترسی
     const visibleMenuItems = menuItems.filter(item => 
         allowedRoutes.includes(item.route)
     );
@@ -82,12 +80,12 @@ export default function SideBar() {
                                 className={`item-container ${route === item.href && "bg-emerald-600"} group flex gap-3 justify-between text-gray-800 items-center p-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg`}
                             >
                                 <div
-                                    className={`text group-hover:text-white ${route === item.href && "text-white"} transition-all duration-300`}
+                                    className={`text group-hover:text-white text-sm ${route === item.href && "text-white"} transition-all duration-300`}
                                 >
                                     {item.text}
                                 </div>
                                 <div
-                                    className={`icon group-hover:text-white ${route === item.href && "text-white"} transition-all duration-300 size-5`}
+                                    className={`icon group-hover:text-white ${route === item.href && "text-white"} transition-all duration-300 flex justify-center items-center`}
                                 >
                                     <FontAwesomeIcon icon={item.icon} />
                                 </div>
@@ -101,10 +99,10 @@ export default function SideBar() {
                     onClick={logout}
                     className="logout group cursor-pointer flex gap-3 justify-between text-gray-800 items-center mx-5 p-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg"
                 >
-                    <div className="text group-hover:text-white transition-all duration-300">
+                    <div className="text text-sm group-hover:text-white transition-all duration-300">
                         خروج
                     </div>
-                    <div className="icon group-hover:text-white transition-all duration-300 size-5">
+                    <div className="icon group-hover:text-white transition-all duration-300 flex justify-center items-center">
                         <FontAwesomeIcon icon={faRightFromBracket} />
                     </div>
                 </div>

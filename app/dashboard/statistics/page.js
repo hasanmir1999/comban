@@ -114,7 +114,7 @@ export default function StatisticsPage() {
                                     <FilterOption
                                         title={"برند کمباین:"}
                                         optionItems={combineBrand}
-                                        onChange={(value) =>
+                                        onClick={(value) =>
                                             setFilters({
                                                 ...filters,
                                                 brand: value,

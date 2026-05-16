@@ -2,6 +2,7 @@ import Image from "next/image";
 import React from "react";
 import UserInfoBox from "../userInfoBox/UserInfoBox";
 import ResMenuIcon from "../resMenuIcon/ResMenuIcon";
+import Link from "next/link";
 
 export default function DashboardHeader() {
     return (
@@ -14,13 +15,15 @@ export default function DashboardHeader() {
                 </div>
                 <div className="user-info">
                     <div className="logo-container">
-                        <Image
-                            width={100}
-                            height={100}
-                            className="w-15 sm:w-20 object-cover"
-                            src={"/images/comban2.png"}
-                            alt="logo"
-                        />
+                        <Link href={"/dashboard"}>
+                            <Image
+                                width={100}
+                                height={100}
+                                className="w-15 sm:w-20 object-cover"
+                                src={"/images/comban2.png"}
+                                alt="logo"
+                            />
+                        </Link>
                     </div>
                 </div>
             </div>

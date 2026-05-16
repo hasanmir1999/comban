@@ -20,7 +20,7 @@ export default function UserInfoBox() {
                     </div>
                     <div className="text">
                         <h5 className="username text-gray-900">
-                            {data.fullname}
+                            {`${data.name +' '+ data.lastname}`}
                         </h5>
                         <p className="role text-xs text-gray-700">
                             {data.role_name}
