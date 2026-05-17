@@ -39,19 +39,19 @@ export default function UsersManagementPage() {
 
     const { data, status } = useUsers();
 
-    // mutation برای ایجاد کاربر جدید
+
     const createUserMutation = useMutation({
         mutationFn: async (userData) => {
             const response = await api.post("/api-v1/create-user", userData);
             return response.data;
         },
         onSuccess: () => {
-            // invalidate کردن کش users
+
             queryClient.invalidateQueries({ queryKey: ["users"] });
 
             toast.success("کاربر با موفقیت ثبت شد");
 
-            // ریست کردن فرم
+ 
             setFormData({
                 username: "",
                 name: "",
