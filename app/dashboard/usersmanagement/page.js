@@ -194,7 +194,7 @@ export default function UsersManagementPage() {
                         </button>
                     </div>
                 </div>
-                <div className="title flex items-center gap-2 mt-5">
+                <div className="title flex items-center gap-2 mt-10">
                     <div className="icon">
                         <div className="size-5 rounded-lg bg-emerald-600"></div>
                     </div>

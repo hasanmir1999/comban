@@ -104,9 +104,9 @@ export default function TecnicalItem({
     return (
         <div className="tecnical-item-container my-3 flex flex-col border border-emerald-600 rounded-lg py-3 px-5">
             {/* ردیف اصلی: عنوان + وضعیت + توضیحات + دکمه دوربین */}
-            <div className="flex flex-col lg:flex-row items-start lg:items-center gap-3">
+            <div className="flex flex-col items-start gap-3">
                 <div className="status-title flex flex-wrap gap-2 items-center shrink-0">
-                    <div className="title text-gray-800 text-lg font-semibold whitespace-nowrap">
+                    <div className="title text-gray-800 font-semibold">
                         {title}
                     </div>
                     <div className="status flex items-center gap-2 text-sm">
@@ -120,7 +120,7 @@ export default function TecnicalItem({
                             htmlFor={`salem-${index}`}
                             className="cursor-pointer"
                         >
-                            سالم
+                            بلی
                         </label>
                         <input
                             type="radio"
@@ -132,15 +132,15 @@ export default function TecnicalItem({
                             htmlFor={`mayob-${index}`}
                             className="cursor-pointer"
                         >
-                            معیوب
+                            خیر
                         </label>
                     </div>
                 </div>
 
-                <div className="description flex-1 w-full lg:w-auto flex gap-2">
+                <div className="description flex-1 w-full flex gap-2">
                     <textarea
                         value={componentData.notes}
-                        className="border flex-1 text-gray-800 [direction:rtl] border-gray-300 p-2 rounded-lg outline-none caret-green-600 focus:border-green-600 transition-all duration-300 resize-none overflow-y-auto"
+                        className="border flex-1 text-gray-800 [direction:rtl] border-gray-300 py-1.25 px-2 rounded-lg outline-none caret-green-600 focus:border-green-600 transition-all duration-300 resize-none overflow-y-auto"
                         rows={1}
                         style={{ minHeight: "2.5rem", maxHeight: "15rem" }}
                         onChange={(e) => {

@@ -6,7 +6,7 @@ export default function LoginHeader() {
             <Image
                 width={100}
                 height={100}
-                className="w-20 object-cover"
+                className="sm:w-20 w-16 object-cover"
                 src={"/images/vezarat.png"}
                 alt="logo"
             />

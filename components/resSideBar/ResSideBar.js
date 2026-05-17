@@ -85,7 +85,7 @@ export default function ResSideBar() {
             <nav className="mt-10 sm:mt-30 flex-1 overflow-y-auto">
                 <ul className="side-bar-list-item">
                     {visibleMenuItems.map((item) => (
-                        <li key={item.route} className="px-3 py-2">
+                        <li key={item.route} className="px-3 py-1.5">
                             <Link
                                 href={item.href}
                                 onClick={closeSidebar}

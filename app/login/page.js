@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
@@ -12,9 +12,10 @@ import CopyRight from "@/components/copyRight/CopyRight";
 import LoginHeader from "@/components/loginHeader/LoginHeader";
 
 export default function LoginPage() {
-    const router = useRouter()
+    const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
+        grant_type: "password",
         username: "",
         password: "",
     });
@@ -30,8 +31,11 @@ export default function LoginPage() {
         try {
             const res = await axios.post(
                 "https://lotexev.ir/api-v1/login",
+                new URLSearchParams(formData),
                 {
-                    ...formData,
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
                 },
             );
             console.log(res.data);
@@ -39,7 +43,7 @@ export default function LoginPage() {
                 expires: 7,
                 path: "/",
             });
-            router.push('/dashboard')
+            router.push("/dashboard");
             setLoading(false);
         } catch (err) {
             console.log(err);
@@ -50,9 +54,9 @@ export default function LoginPage() {
 
     return (
         <div className="bg-gray-50 h-svh w-full flex justify-center items-center">
-        <LoginHeader />
-            <div className="form-box w-full h-full flex flex-col justify-center sm:w-110 sm:h-auto bg-white sm:rounded-lg shadow-sm">
-                <div className="form-container py-5 px-7">
+            <LoginHeader />
+            <div className="form-box w-full h-full flex flex-col justify-center sm:w-108 sm:h-auto bg-white sm:rounded-lg shadow-sm">
+                <div className="form-container py-5 px-6">
                     <div className="logo flex justify-center">
                         <Image
                             width={100}
@@ -72,7 +76,12 @@ export default function LoginPage() {
                     </div>
                     <div className="form mt-8 flex flex-col gap-4 items-center">
                         <InputContainer
-                            title={"نام کاربری*"}
+                            title={
+                                <>
+                                    نام کاربری
+                                    <span className="text-red-500">*</span>
+                                </>
+                            }
                             type={"text"}
                             setFormData={setFormData}
                             onChange={(v) =>
@@ -80,7 +89,12 @@ export default function LoginPage() {
                             }
                         />
                         <InputContainer
-                            title={"رمز عبور*"}
+                            title={
+                                <>
+                                    رمز عبور
+                                    <span className="text-red-500">*</span>
+                                </>
+                            }
                             type={"password"}
                             setFormData={setFormData}
                             onChange={(v) =>

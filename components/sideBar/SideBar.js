@@ -74,7 +74,7 @@ export default function SideBar() {
             <nav className="mt-30 flex-1">
                 <ul className="side-bar-list-item">
                     {visibleMenuItems.map((item) => (
-                        <li key={item.route} className="px-5 py-2">
+                        <li key={item.route} className="px-5 py-1.5">
                             <Link
                                 href={item.href}
                                 className={`item-container ${route === item.href && "bg-emerald-600"} group flex gap-3 justify-between text-gray-800 items-center p-2.5 hover:bg-emerald-600 transition-all duration-300 rounded-lg`}

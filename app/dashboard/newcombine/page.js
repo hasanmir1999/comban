@@ -1,6 +1,7 @@
 "use client";
 
 import InputContainer from "@/components/inputContainer/InputContainer";
+import InsertDropMenu from "@/components/insertDropMenu/InsertDropMenu";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
@@ -20,15 +21,24 @@ export default function NewCombinePage() {
         chassis_number: "",
     });
 
+    const combineBrand = [
+        { id: 1, name: "جان دیر" },
+        { id: 2, name: "نیوهلند" },
+        { id: 3, name: "کلاس" },
+        { id: 4, name: "کیس" },
+    ];
+
     const createCombineHandler = async () => {
-        setLoading(true)
+        setLoading(true);
         try {
-            const res = await axios.post("https://lotexev.ir/api-v1/", { ...formData });
+            const res = await axios.post("https://lotexev.ir/api-v1/", {
+                ...formData,
+            });
             console.log(res);
-            setLoading(false)
-            toast.success('اطلاعات کمباین جدید با موفقیت ثبت شد.')
+            setLoading(false);
+            toast.success("اطلاعات کمباین جدید با موفقیت ثبت شد.");
         } catch (err) {
-            setLoading(false)
+            setLoading(false);
             console.log(err);
         }
     };
@@ -48,7 +58,12 @@ export default function NewCombinePage() {
                     <div className="row flex flex-wrap gap-y-5">
                         <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
                             <InputContainer
-                                title={<>نام مالک<span className="text-red-500">*</span></>}
+                                title={
+                                    <>
+                                        نام مالک
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
                                 type={"text"}
                                 onChange={(v) =>
                                     setFormData((p) => ({
@@ -73,21 +88,30 @@ export default function NewCombinePage() {
                             />
                         </div>
                         <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
-                            <InputContainer
-                                title={<>برند (سازنده)<span className="text-red-500">*</span></>}
-                                type={"text"}
-                                onChange={(v) =>
+                            <InsertDropMenu
+                                title={
+                                    <>
+                                        برند (سازنده)
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                menuItems={combineBrand}
+                                onClick={(value) =>
                                     setFormData((p) => ({
                                         ...p,
-                                        brand: v,
+                                        brand: value,
                                     }))
                                 }
-                                dir={"ltr"}
                             />
                         </div>
                         <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
                             <InputContainer
-                                title={<>مدل کمباین<span className="text-red-500">*</span></>}
+                                title={
+                                    <>
+                                        مدل کمباین
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
                                 type={"text"}
                                 onChange={(v) =>
                                     setFormData((p) => ({
@@ -100,7 +124,12 @@ export default function NewCombinePage() {
                         </div>
                         <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
                             <InputContainer
-                                title={<>شماره سریال (VIN)<span className="text-red-500">*</span></>}
+                                title={
+                                    <>
+                                        شماره سریال (VIN)
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
                                 type={"text"}
                                 onChange={(v) =>
                                     setFormData((p) => ({
@@ -116,7 +145,10 @@ export default function NewCombinePage() {
                                 title={"شماره موتور"}
                                 type={"text"}
                                 onChange={(v) =>
-                                    setFormData((p) => ({ ...p, engine_number: v }))
+                                    setFormData((p) => ({
+                                        ...p,
+                                        engine_number: v,
+                                    }))
                                 }
                                 dir={"ltr"}
                             />

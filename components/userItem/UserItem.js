@@ -52,9 +52,6 @@ export default function UserItem({ user, openMenuId, setOpenMenuId }) {
         }
     };
 
-    // const handelDelete = async ()=>{
-    //     const res = await api.delete(`/api-v1/delete-user/${user.id}`)
-    // }
 
     return (
         <>

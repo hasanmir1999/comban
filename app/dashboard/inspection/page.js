@@ -15,37 +15,99 @@ import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-const COMPONENTS = [
-    "موتور",
-    "سیستم هیدرولیک",
-    "سکوی پرش",
-    "واحد کوبش",
-    "سیستم تمیز کننده",
-    "مخزن غله",
-    "سیستم انتقال",
-];
-
-const initialComponentsData = () =>
-    COMPONENTS.map((name) => ({
-        component_name: name,
-        status: null,
-        notes: "",
-        photo: null,
-    }));
-
 export default function InspectionPage() {
     const [loading, setLoading] = useState(false);
     const [locationLoading, setLocationLoading] = useState(false);
     const [location, setLocation] = useState(null);
     const [result, setResult] = useState("");
     const [overallNotes, setOverallNotes] = useState("");
-    const [componentsData, setComponentsData] = useState(initialComponentsData);
-
     const [searchInput, setSearchInput] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
     const [combineId, setCombineId] = useState(null);
-
     const { data: combines, status: combinesStatus } = useCombines(searchTerm);
+
+    const tecnicalItems = [
+        {
+            id: 1,
+            title: "چرخ و فلک دارای پیچیدگی نبوده و پره ها کاملا با زمین مساوی هستند.",
+        },
+        {
+            id: 2,
+            title: "به خاطر جلوگیری از برخورد شدید پره های چرخ و فلک با محصول؛ چرخ و فلک دارای مقداری سرش می باشد.",
+        },
+        {
+            id: 3,
+            title: "تیغه های برش دستگاه از نوع دندانه دار و غیر معیوب می باشند.",
+        },
+        {
+            id: 4,
+            title: "تیغه ها به راحتی در داخل انگشتی ها حرکت می کنند.",
+        },
+        {
+            id: 5,
+            title: "تیغه ها دارای تطابق صحیح با انگشتی ها می باشند.",
+        },
+        {
+            id: 6,
+            title: "سه راهی اره متصل به شاتون فاقد هرگونه لقی می باشد.",
+        },
+        {
+            id: 7,
+            title: "پره های هلیس (غلطک مارپیچ) سکوی برش از کف و دیواره های انتهایی سکو دارای فاصله ده میلیمتر می باشد.",
+        },
+        {
+            id: 8,
+            title: "تنظیم کورس انگشتی های هلیس به گونه ای است که در موقع قرار گرفتن در مقابل نقاله تغذیه کاملا داخل هستند و در موقع عمود بر کف سکو کاملا بیرون می باشند.",
+        },
+        {
+            id: 9,
+            title: "شیب پرکهای بر روی هلیس به گونه ای است که محصول را کاملا به سمت نقاله تغذیه هدایت می کند.",
+        },
+        {
+            id: 10,
+            title: "فاصله انگشتی ها روی غلطک (هلیس) در جایی که کاملاً بیرون هستند با کف سکو ده میلیمتر می باشد.",
+        },
+        {
+            id: 11,
+            title: "کف سکوی برش فاقد هرگونه برآمدگی است که مانع عبور محصول می شود.",
+        },
+        {
+            id: 12,
+            title: "جهت نصب صحیح نبشی ها روی تسمه نقاله رعایت گردید.",
+        },
+        {
+            id: 13,
+            title: "فاصله کوبنده و ضد کوبنده برای گندم از جلو 14 میلیمتر و از عقب 7 میلیمتر رعایت گردید.",
+        },
+        {
+            id: 14,
+            title: "دور کوبنده برای گندم آبی و دیم 750 تا 1200 دور در دقیقه می باشد.",
+        },
+        {
+            id: 15,
+            title: "حفره سنگ گیر در زیر کوبنده مسدود نگردیده است.",
+        },
+        {
+            id: 16,
+            title: "دارای سیستم بازدارنده یا پرده های جلوگیری کننده از خروج محصول از عقب کمباین می باشد.",
+        },
+        {
+            id: 17,
+            title: "در سطوح سیستم های جداکننده و تمییز کننده و کلاً الکهای پایین و بالا و غیره هیچگونه کاه و بقایای محصول روی آن وجود ندارد.",
+        },
+        {
+            id: 18,
+            title: "باد پنکه به گونه ای تنظیم گردیده که به جلوی الک بالایی و عقب الک پایینی برخورد می کند.",
+        },
+        {
+            id: 19,
+            title: "بخاطر جلوگیری از کج شدن کمباین و در نتیجه سکوی برش و غیره باد لاستیک های طرفین کمباین یکی است.",
+        },
+        {
+            id: 20,
+            title: "بخاطر جلوگیری از سرش کمباین هنگامی که از جلو به کمباین نگاه کردیم آج لاستیک های محرک بصورت 7 و متحرک بصورت 8 مشاهده گردید.",
+        },
+    ];
 
     const showAllHandler = () => {
         setSearchInput("");
@@ -193,12 +255,12 @@ export default function InspectionPage() {
                         </h5>
                     </div>
                     <div className="search-and-list-container mt-8">
-                        <div className="search-container">
+                        <div className="search-container px-1">
                             <div className="row flex flex-col sm:flex-row items-stretch sm:items-end gap-3">
                                 <div className="col flex-1">
                                     <InputContainer
                                         type={"text"}
-                                        title={"جستجو:"}
+                                        title={"جستجو کمباین مورد نظر:"}
                                         placeHolder={
                                             "متن جستجو (مثلا نام مالک،سریال،شماره موتور،...)"
                                         }
@@ -211,14 +273,14 @@ export default function InspectionPage() {
                                 <div className="col">
                                     <div className="btn-container flex items-center gap-2">
                                         <button
-                                            onClick={searchHandler}
-                                            className="text-white cursor-pointer bg-emerald-600 whitespace-nowrap py-1 px-4 rounded-lg text-sm sm:text-base"
+                                            // onClick={searchHandler}
+                                            className="text-white cursor-pointer bg-emerald-600 whitespace-nowrap py-1 px-4 rounded-lg text-xs sm:text-sm"
                                         >
                                             جستجو
                                         </button>
                                         <button
-                                            onClick={showAllHandler}
-                                            className="text-white cursor-pointer bg-amber-500 whitespace-nowrap py-1 px-4 rounded-lg text-sm sm:text-base"
+                                            // onClick={showAllHandler}
+                                            className="text-white cursor-pointer bg-amber-500 whitespace-nowrap py-1 px-4 rounded-lg text-xs sm:text-sm"
                                         >
                                             نمایش همه
                                         </button>
@@ -353,35 +415,6 @@ export default function InspectionPage() {
 
                 <div className="form-container mt-8">
                     <div className="row flex flex-wrap gap-y-5">
-                        <div className="col w-full p-1">
-                            <p className="text-[13px] font-semibold text-gray-900 mb-2">
-                                نتیجه بازرسی
-                                <span className="text-red-500">*</span>
-                            </p>
-                            <div className="flex items-center gap-4">
-                                {["قبول", "رد"].map((val) => (
-                                    <label
-                                        key={val}
-                                        className="flex items-center gap-2 cursor-pointer"
-                                    >
-                                        <input
-                                            type="radio"
-                                            name="result"
-                                            value={val}
-                                            checked={result === val}
-                                            onChange={(e) =>
-                                                setResult(e.target.value)
-                                            }
-                                            className="w-4 h-4"
-                                        />
-                                        <span className="text-gray-700">
-                                            {val}
-                                        </span>
-                                    </label>
-                                ))}
-                            </div>
-                        </div>
-
                         {/* موقعیت مکانی */}
                         <div className="col w-full p-1">
                             <p className="text-[13px] font-semibold text-gray-900 mb-2">
@@ -425,7 +458,7 @@ export default function InspectionPage() {
                                 )}
                             </div>
                         </div>
-                        {location && (
+                        {/* {location && (
                             <div className="mt-3">
                                 <img
                                     src={`https://static.neshan.org/api/v1/static?key=YOUR_API_KEY&center=${location.lng},${location.lat}&zoom=15&width=400&height=300&marker=red`}
@@ -433,7 +466,7 @@ export default function InspectionPage() {
                                     className="rounded-lg border border-gray-300"
                                 />
                             </div>
-                        )}
+                        )} */}
 
                         {/* توضیحات کلی */}
                         <div className="col w-full p-1">
@@ -467,14 +500,40 @@ export default function InspectionPage() {
                             <span className="text-red-500">*</span>
                         </p>
                         <div className="item-container mt-5">
-                            {COMPONENTS.map((component, index) => (
+                            {tecnicalItems.map((item) => (
                                 <TecnicalItem
-                                    key={component}
-                                    title={`${component}:`}
-                                    index={index}
+                                    key={item.id}
+                                    title={`${item.id + "- " + item.title}`}
                                     onChange={handleComponentChange}
                                     onPhotoCapture={handlePhotoCapture}
                                 />
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="col w-full p-1">
+                        <p className="text-[13px] font-semibold text-gray-900 mb-2">
+                            نتیجه بازرسی
+                            <span className="text-red-500">*</span>
+                        </p>
+                        <div className="flex items-center gap-4">
+                            {["قبول", "رد"].map((val) => (
+                                <label
+                                    key={val}
+                                    className="flex items-center gap-2 cursor-pointer"
+                                >
+                                    <input
+                                        type="radio"
+                                        name="result"
+                                        value={val}
+                                        checked={result === val}
+                                        onChange={(e) =>
+                                            setResult(e.target.value)
+                                        }
+                                        className="w-4 h-4"
+                                    />
+                                    <span className="text-gray-700">{val}</span>
+                                </label>
                             ))}
                         </div>
                     </div>
