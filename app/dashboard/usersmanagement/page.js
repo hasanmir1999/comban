@@ -13,10 +13,13 @@ import api from "@/lib/axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import TabelNotFound from "@/components/tabelNotFound/TabelNotFound";
 
 export default function UsersManagementPage() {
     const [openMenuId, setOpenMenuId] = useState(null);
     const queryClient = useQueryClient();
+    const [searchInput, setSearchInput] = useState("");
+    const [searchQuery, setSearchQuery] = useState(""); // برای ذخیره کوئری جستجو
 
     const [formData, setFormData] = useState({
         username: "",
@@ -37,8 +40,7 @@ export default function UsersManagementPage() {
         { id: 5, name: "مدیر برنامه" },
     ];
 
-    const { data, status } = useUsers();
-
+    const { data, status } = useUsers(searchQuery);
 
     const createUserMutation = useMutation({
         mutationFn: async (userData) => {
@@ -46,12 +48,9 @@ export default function UsersManagementPage() {
             return response.data;
         },
         onSuccess: () => {
-
             queryClient.invalidateQueries({ queryKey: ["users"] });
-
             toast.success("کاربر با موفقیت ثبت شد");
 
- 
             setFormData({
                 username: "",
                 name: "",
@@ -69,7 +68,6 @@ export default function UsersManagementPage() {
     });
 
     const handleSubmit = () => {
-        // اعتبارسنجی فیلدهای اجباری
         if (
             !formData.name ||
             !formData.lastname ||
@@ -81,6 +79,21 @@ export default function UsersManagementPage() {
         }
 
         createUserMutation.mutate(formData);
+    };
+
+    // تابع جستجو
+    const searchHandler = () => {
+        if (!searchInput.trim()) {
+            toast.error("لطفا کد ملی را وارد کنید");
+            return;
+        }
+        setSearchQuery(searchInput.trim());
+    };
+
+    // تابع نمایش همه
+    const showAllHandler = () => {
+        setSearchInput("");
+        setSearchQuery("");
     };
 
     return (
@@ -265,8 +278,9 @@ export default function UsersManagementPage() {
                                     type={"text"}
                                     title={"جستجو:"}
                                     placeHolder={"متن جستجو (کد ملی)"}
+                                    value={searchInput}
                                     onChange={(v) => {
-                                        // setSearchInput(v);
+                                        setSearchInput(v);
                                     }}
                                     dir={"rtl"}
                                 />
@@ -274,13 +288,13 @@ export default function UsersManagementPage() {
                             <div className="col">
                                 <div className="btn-container flex items-center gap-2">
                                     <button
-                                        // onClick={searchHandler}
+                                        onClick={searchHandler}
                                         className="text-white cursor-pointer bg-emerald-600 whitespace-nowrap py-1 px-4 rounded-lg text-xs sm:text-sm"
                                     >
                                         جستجو
                                     </button>
                                     <button
-                                        // onClick={showAllHandler}
+                                        onClick={showAllHandler}
                                         className="text-white cursor-pointer bg-amber-500 whitespace-nowrap py-1 px-4 rounded-lg text-xs sm:text-sm"
                                     >
                                         نمایش همه
@@ -316,18 +330,24 @@ export default function UsersManagementPage() {
                                     </div>
                                 </>
                             ) : status === "success" ? (
-                                data.users.map((user) => (
-                                    <div
-                                        key={user.id}
-                                        className="col w-full lg:w-1/2 p-1"
-                                    >
-                                        <UserItem
-                                            user={user}
-                                            openMenuId={openMenuId}
-                                            setOpenMenuId={setOpenMenuId}
-                                        />
+                                data?.users?.length > 0 ? (
+                                    data.users.map((user) => (
+                                        <div
+                                            key={user.id}
+                                            className="col w-full lg:w-1/2 p-1"
+                                        >
+                                            <UserItem
+                                                user={user}
+                                                openMenuId={openMenuId}
+                                                setOpenMenuId={setOpenMenuId}
+                                            />
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="col w-full p-2">
+                                        <TabelNotFound />
                                     </div>
-                                ))
+                                )
                             ) : (
                                 status === "error" && (
                                     <div className="col w-full p-2">

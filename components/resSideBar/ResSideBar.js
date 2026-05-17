@@ -27,7 +27,7 @@ export default function ResSideBar() {
         if (token) {
             const payload = decodeJWT(token);
             if (payload?.user_permissions) {
-                // استخراج روت‌های مجاز
+
                 const routes = payload.user_permissions
                     .filter(per => per.startsWith("view_"))
                     .map(per => per.replace("view_", ""));
@@ -36,7 +36,7 @@ export default function ResSideBar() {
         }
     }, []);
 
-    // لیست تمام آیتم‌های منو
+
     const menuItems = [
         {
             href: "/dashboard/newcombine",
@@ -70,7 +70,7 @@ export default function ResSideBar() {
         }
     ];
 
-    // فیلتر کردن آیتم‌های منو بر اساس دسترسی
+
     const visibleMenuItems = menuItems.filter(item => 
         allowedRoutes.includes(item.route)
     );

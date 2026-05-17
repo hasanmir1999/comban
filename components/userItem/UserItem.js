@@ -13,12 +13,44 @@ import {
 import { useState } from "react";
 import Link from "next/link";
 import api from "@/lib/axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 export default function UserItem({ user, openMenuId, setOpenMenuId }) {
+    const queryClient = useQueryClient();
     const btnMenuStatus = openMenuId === user.id;
+
     const toggleMenu = () => {
         setOpenMenuId(btnMenuStatus ? null : user.id);
     };
+
+    const deleteUserMutation = useMutation({
+        mutationFn: async (userId) => {
+            const response = await api.delete(`/api-v1/delete-user/${userId}`);
+            return response.data;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["users"] });
+
+            Swal.fire({
+                title: "حذف شد!",
+                text: "کاربر با موفقیت حذف شد.",
+                icon: "success",
+                confirmButtonText: "باشه",
+            });
+        },
+        onError: (error) => {
+            Swal.fire({
+                title: "خطا!",
+                text:
+                    error.response?.data?.message ||
+                    "مشکلی در حذف کاربر پیش آمد.",
+                icon: "error",
+                confirmButtonText: "باشه",
+            });
+        },
+    });
+
     const handleDelete = async () => {
         const result = await Swal.fire({
             title: "آیا مطمئن هستید؟",
@@ -33,25 +65,10 @@ export default function UserItem({ user, openMenuId, setOpenMenuId }) {
         });
 
         if (result.isConfirmed) {
-            try {
-                await api.delete(`/api-v1/delete-user/${user.id}`);
-
-                Swal.fire({
-                    title: "حذف شد!",
-                    text: "کاربر با موفقیت حذف شد.",
-                    icon: "success",
-                    confirmButtonText: "باشه",
-                });
-            } catch (error) {
-                Swal.fire({
-                    title: "خطا!",
-                    text: "مشکلی در حذف کاربر پیش آمد.",
-                    icon: "error",
-                    confirmButtonText: "باشه",
-                });
-            }
+            deleteUserMutation.mutate(user.id);
         }
     };
+
     const [showInfo, setShowInfo] = useState(false);
 
     return (
@@ -160,7 +177,8 @@ export default function UserItem({ user, openMenuId, setOpenMenuId }) {
                         </Link>
                         <button
                             onClick={handleDelete}
-                            className="delete-btn cursor-pointer flex justify-center items-center text-red-500"
+                            disabled={deleteUserMutation.isPending}
+                            className="delete-btn cursor-pointer flex justify-center items-center text-red-500 disabled:opacity-50"
                         >
                             <FontAwesomeIcon icon={faTrash} />
                         </button>
@@ -181,7 +199,8 @@ export default function UserItem({ user, openMenuId, setOpenMenuId }) {
                     </Link>
                     <button
                         onClick={handleDelete}
-                        className="delete-btn cursor-pointer flex justify-center items-center bg-red-500 hover:bg-red-600 text-white size-8 rounded-lg transition-colors"
+                        disabled={deleteUserMutation.isPending}
+                        className="delete-btn cursor-pointer flex justify-center items-center bg-red-500 hover:bg-red-600 text-white size-8 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         <FontAwesomeIcon icon={faTrash} />
                     </button>
