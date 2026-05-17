@@ -9,12 +9,14 @@ export default function InputContainer({
     onChange,
     dir,
     placeHolder,
+    value,
 }) {
     const [eyeStat, setEyeStat] = useState(false);
     return (
         <div className="input-container w-full relative">
             <p className="text-[13px] font-semibold text-gray-900">{title}</p>
             <input
+                value={value}
                 placeholder={placeHolder}
                 onChange={(e) => onChange(e.target.value)}
                 type={

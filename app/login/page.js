@@ -38,7 +38,7 @@ export default function LoginPage() {
                     },
                 },
             );
-            console.log(res.data);
+            console.log(res)
             Cookies.set("access_token", `${res.data.access_token}`, {
                 expires: 7,
                 path: "/",

@@ -1,15 +1,31 @@
-'use client'
+"use client";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function InsertDropMenu({title, menuItems , onClick}) {
+export default function InsertDropMenu({
+    title,
+    menuItems,
+    onClick,
+    selectedValue,
+}) {
     const [menuStat, setMenuStat] = useState(false);
     const [selectedItem, setSelectedItem] = useState("");
+
+    // sync selectedItem with selectedValue from parent
+    useEffect(() => {
+        if (selectedValue !== undefined && selectedValue !== null) {
+            const item = menuItems.find((item) => item.id === selectedValue);
+            if (item) {
+                setSelectedItem(item.name);
+            }
+        }
+    }, [selectedValue, menuItems]);
+
     return (
         <div className="insert-drop-menu">
             <div className="title">
-                <p className=" text-[13px] font-semibold text-gray-900">
+                <p className="text-[13px] font-semibold text-gray-900">
                     {title}
                 </p>
             </div>
@@ -19,7 +35,9 @@ export default function InsertDropMenu({title, menuItems , onClick}) {
                     className="display-selected-item cursor-pointer border border-gray-300 py-1.25 px-2 rounded-lg flex justify-between items-center"
                 >
                     <div className="selected-item-text text-gray-800">
-                        {selectedItem === '' ? menuItems[0].name : selectedItem}
+                        {selectedItem === ""
+                            ? menuItems[0]?.name
+                            : selectedItem}
                     </div>
                     <FontAwesomeIcon
                         icon={faChevronDown}
@@ -35,15 +53,13 @@ export default function InsertDropMenu({title, menuItems , onClick}) {
                                 <li
                                     key={item.id}
                                     onClick={() => {
-                                        onClick(item.id)
+                                        onClick(item.id);
                                         setSelectedItem(item.name);
-                                        setFilterStat(false);
+                                        setMenuStat(false);
                                     }}
                                     className="rounded-lg cursor-pointer my-1 p-2 transition-all duration-300 text-gray-800 hover:text-white hover:bg-emerald-600"
                                 >
-                                    <p className="text">
-                                        {item.name}
-                                    </p>
+                                    <p className="text">{item.name}</p>
                                 </li>
                             );
                         })}

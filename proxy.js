@@ -20,19 +20,16 @@ export default function proxy(request) {
 
     if (access_token && pathname.startsWith("/dashboard")) {
         const payload = decodeJWT(access_token);
-        
-
+        console.log(payload)
         const okRoutes = payload.user_permissions
             .filter(per => per.startsWith("view_"))
             .map(per => per.replace("view_", ""));
 
         console.log("okRoutes:", okRoutes);
 
-
         const currentPath = pathname.replace("/dashboard/", "").split("/")[0];
-        
-        console.log("currentPath:", currentPath);
 
+        console.log("currentPath:", currentPath);
 
         if (currentPath && !okRoutes.includes(currentPath)) {
             return NextResponse.redirect(new URL("/dashboard", request.url));

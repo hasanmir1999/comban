@@ -8,6 +8,7 @@ import {
     faTrash,
     faEllipsisVertical,
     faPlay,
+    faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import Link from "next/link";
@@ -51,10 +52,68 @@ export default function UserItem({ user, openMenuId, setOpenMenuId }) {
             }
         }
     };
-
+    const [showInfo, setShowInfo] = useState(false);
 
     return (
         <>
+            <div
+                className={`show-info-container flex items-center transition-all px-5 duration-300 ${showInfo ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"} justify-center bg-gray-950/30 fixed w-full h-full top-0 right-0 z-10`}
+            >
+                <div className="show-info-box flex sm:items-center gap-5 relative bg-white p-5 rounded-lg w-200">
+                    <button
+                        onClick={() => setShowInfo(false)}
+                        className="cursor-pointer text-gray-500 absolute left-5 top-6 border-2 border-emerald-600 flex justify-center items-center size-8 rounded-full"
+                    >
+                        <FontAwesomeIcon icon={faTimes} />
+                    </button>
+
+                    <div className="icon flex items-center justify-center bg-emerald-600 size-20 sm:size-50 text-white rounded-lg text-xl sm:text-4xl">
+                        <FontAwesomeIcon icon={faUser} />
+                    </div>
+                    <div className="text flex flex-col gap-3 flex-1 min-w-0">
+                        <div className="text-box flex gap-2 items-center">
+                            <p className="title text-sm sm:text-base text-gray-800 whitespace-nowrap shrink-0">
+                                نام و نام خانوادگی:
+                            </p>
+                            <p className="name text-gray-600 text-xs sm:text-sm truncate">
+                                {`${user.name + " " + user.lastname}`}
+                            </p>
+                        </div>
+                        <div className="text-box flex gap-2 items-center">
+                            <p className="title text-sm sm:text-base text-gray-800 whitespace-nowrap shrink-0">
+                                شماره تماس:
+                            </p>
+                            <p className="phone text-gray-600 text-xs sm:text-sm truncate">
+                                {user.phone}
+                            </p>
+                        </div>
+                        <div className="text-box flex gap-2 items-center">
+                            <p className="title text-sm sm:text-base text-gray-800 whitespace-nowrap shrink-0">
+                                کد ملی:
+                            </p>
+                            <p className="national-code text-gray-600 text-xs sm:text-sm truncate">
+                                {user.national_code}
+                            </p>
+                        </div>
+                        <div className="text-box flex gap-2 items-center">
+                            <p className="title text-sm sm:text-base text-gray-800 whitespace-nowrap shrink-0">
+                                کد نظام مهندسی:
+                            </p>
+                            <p className="eng-code text-gray-600 text-xs sm:text-sm truncate">
+                                {user.engineer_code}
+                            </p>
+                        </div>
+                        <div className="text-box flex gap-2 items-center">
+                            <p className="title text-sm sm:text-base text-gray-800 whitespace-nowrap shrink-0">
+                                نقش کاربری:
+                            </p>
+                            <p className="eng-code text-gray-600 text-xs sm:text-sm truncate">
+                                {user.role}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {btnMenuStatus && (
                 <div
                     onClick={() => setOpenMenuId(null)}
@@ -88,7 +147,7 @@ export default function UserItem({ user, openMenuId, setOpenMenuId }) {
                             icon={faPlay}
                         />
                         <button
-                            // onClick={onInfo?.(user)}
+                            onClick={() => setShowInfo(true)}
                             className="info-btn cursor-pointer flex justify-center items-center text-blue-500"
                         >
                             <FontAwesomeIcon icon={faInfoCircle} />
@@ -109,7 +168,7 @@ export default function UserItem({ user, openMenuId, setOpenMenuId }) {
                 </div>
                 <div className="btns-container hidden sm:flex items-center gap-2">
                     <button
-                        onClick={() => onInfo?.(user)}
+                        onClick={() => setShowInfo(true)}
                         className="info-btn cursor-pointer flex justify-center items-center bg-blue-500 hover:bg-blue-600 text-white size-8 rounded-lg transition-colors"
                     >
                         <FontAwesomeIcon icon={faInfoCircle} />

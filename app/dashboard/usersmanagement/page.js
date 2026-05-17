@@ -9,12 +9,14 @@ import UserItemLoading from "@/components/userItemLoading/UserItemLoading";
 import useUsers from "@/hooks/useUsers";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
+import api from "@/lib/axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function UsersManagementPage() {
     const [openMenuId, setOpenMenuId] = useState(null);
+    const queryClient = useQueryClient();
 
     const [formData, setFormData] = useState({
         username: "",
@@ -23,20 +25,63 @@ export default function UsersManagementPage() {
         phone: "",
         national_code: "",
         engineer_code: "",
-        role_id: 0,
+        role_id: 1,
         password: "",
     });
 
     const roles = [
-        { id: 0, name: "مرکز جهاد کشاورزی" },
-        { id: 1, name: "کاربر نظام مهندسی" },
-        { id: 2, name: "ناظر کمباین" },
-        { id: 3, name: "مدیر مکانیزاسیون استان" },
-        { id: 4, name: "مدیر برنامه" },
+        { id: 1, name: "مرکز جهاد کشاورزی" },
+        { id: 2, name: "کاربر نظام مهندسی" },
+        { id: 3, name: "ناظر کمباین" },
+        { id: 4, name: "مدیر مکانیزاسیون استان" },
+        { id: 5, name: "مدیر برنامه" },
     ];
 
     const { data, status } = useUsers();
 
+    // mutation برای ایجاد کاربر جدید
+    const createUserMutation = useMutation({
+        mutationFn: async (userData) => {
+            const response = await api.post("/api-v1/create-user", userData);
+            return response.data;
+        },
+        onSuccess: () => {
+            // invalidate کردن کش users
+            queryClient.invalidateQueries({ queryKey: ["users"] });
+
+            toast.success("کاربر با موفقیت ثبت شد");
+
+            // ریست کردن فرم
+            setFormData({
+                username: "",
+                name: "",
+                lastname: "",
+                phone: "",
+                national_code: "",
+                engineer_code: "",
+                role_id: 1,
+                password: "",
+            });
+        },
+        onError: (error) => {
+            toast.error(error.response?.data?.message || "خطا در ثبت کاربر");
+        },
+    });
+
+    const handleSubmit = () => {
+        // اعتبارسنجی فیلدهای اجباری
+        if (
+            !formData.name ||
+            !formData.lastname ||
+            !formData.username ||
+            !formData.password
+        ) {
+            toast.error("لطفا فیلدهای اجباری را پر کنید");
+            return;
+        }
+
+        createUserMutation.mutate(formData);
+    };
 
     return (
         <div className="users-management-page bg-white w-full min-h-svh pt-30 pb-5 px-10 lg:pr-90">
@@ -60,10 +105,11 @@ export default function UsersManagementPage() {
                                     </>
                                 }
                                 type={"text"}
+                                value={formData.name}
                                 onChange={(v) =>
                                     setFormData((p) => ({
                                         ...p,
-                                        fname: v,
+                                        name: v,
                                     }))
                                 }
                                 dir={"rtl"}
@@ -78,10 +124,11 @@ export default function UsersManagementPage() {
                                     </>
                                 }
                                 type={"text"}
+                                value={formData.lastname}
                                 onChange={(v) =>
                                     setFormData((p) => ({
                                         ...p,
-                                        fname: v,
+                                        lastname: v,
                                     }))
                                 }
                                 dir={"rtl"}
@@ -91,10 +138,11 @@ export default function UsersManagementPage() {
                             <InputContainer
                                 title={<>شماره تماس</>}
                                 type={"text"}
+                                value={formData.phone}
                                 onChange={(v) =>
                                     setFormData((p) => ({
                                         ...p,
-                                        fname: v,
+                                        phone: v,
                                     }))
                                 }
                                 dir={"ltr"}
@@ -104,10 +152,11 @@ export default function UsersManagementPage() {
                             <InputContainer
                                 title={<>کد ملی</>}
                                 type={"text"}
+                                value={formData.national_code}
                                 onChange={(v) =>
                                     setFormData((p) => ({
                                         ...p,
-                                        fname: v,
+                                        national_code: v,
                                     }))
                                 }
                                 dir={"ltr"}
@@ -117,10 +166,11 @@ export default function UsersManagementPage() {
                             <InputContainer
                                 title={<>کد نظام مهندسی</>}
                                 type={"text"}
+                                value={formData.engineer_code}
                                 onChange={(v) =>
                                     setFormData((p) => ({
                                         ...p,
-                                        fname: v,
+                                        engineer_code: v,
                                     }))
                                 }
                                 dir={"ltr"}
@@ -135,10 +185,11 @@ export default function UsersManagementPage() {
                                     </>
                                 }
                                 menuItems={roles}
+                                selectedValue={formData.role_id}
                                 onClick={(value) =>
                                     setFormData((p) => ({
                                         ...p,
-                                        role: value,
+                                        role_id: value,
                                     }))
                                 }
                             />
@@ -152,10 +203,11 @@ export default function UsersManagementPage() {
                                     </>
                                 }
                                 type={"text"}
+                                value={formData.username}
                                 onChange={(v) =>
                                     setFormData((p) => ({
                                         ...p,
-                                        fname: v,
+                                        username: v,
                                     }))
                                 }
                                 dir={"rtl"}
@@ -170,10 +222,11 @@ export default function UsersManagementPage() {
                                     </>
                                 }
                                 type={"password"}
+                                value={formData.password}
                                 onChange={(v) =>
                                     setFormData((p) => ({
                                         ...p,
-                                        fname: v,
+                                        password: v,
                                     }))
                                 }
                                 dir={"ltr"}
@@ -181,15 +234,17 @@ export default function UsersManagementPage() {
                         </div>
                     </div>
                     <div className="btn-container flex justify-center items-center mt-5 whitespace-nowrap text-sm">
-                        <button className="text-white flex justify-center items-center gap-2 cursor-pointer outline-none bg-emerald-600 rounded-lg py-1.75 px-20">
+                        <button
+                            onClick={handleSubmit}
+                            disabled={createUserMutation.isPending}
+                            className="text-white flex justify-center items-center gap-2 cursor-pointer outline-none bg-emerald-600 rounded-lg py-1.75 px-20 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
                             ثبت کاربر جدید
-                            {0 ? (
+                            {createUserMutation.isPending && (
                                 <FontAwesomeIcon
                                     icon={faSpinner}
                                     className="animate-spin"
                                 />
-                            ) : (
-                                ""
                             )}
                         </button>
                     </div>
@@ -209,9 +264,7 @@ export default function UsersManagementPage() {
                                 <InputContainer
                                     type={"text"}
                                     title={"جستجو:"}
-                                    placeHolder={
-                                        "متن جستجو (کد ملی)"
-                                    }
+                                    placeHolder={"متن جستجو (کد ملی)"}
                                     onChange={(v) => {
                                         // setSearchInput(v);
                                     }}

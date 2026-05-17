@@ -1,18 +1,26 @@
 "use client";
 import InputContainer from "@/components/inputContainer/InputContainer";
+import InputLoading from "@/components/inputLoading/InputLoading";
 import InsertDropMenu from "@/components/insertDropMenu/InsertDropMenu";
 import SwitchBtn from "@/components/switchBtn/SwitchBtn";
+import useOneUserQuery from "@/hooks/useOneUser";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function EditUserPage() {
+    const params = useParams();
+    const userId = params._id;
+
+    const { data: userData, status } = useOneUserQuery(userId);
+
     const roles = [
-        { id: 0, name: "مرکز جهاد کشاورزی" },
-        { id: 1, name: "کاربر نظام مهندسی" },
-        { id: 2, name: "ناظر کمباین" },
-        { id: 3, name: "مدیر مکانیزاسیون استان" },
-        { id: 4, name: "مدیر برنامه" },
+        { id: 1, name: "مرکز جهاد کشاورزی" },
+        { id: 2, name: "کاربر نظام مهندسی" },
+        { id: 3, name: "ناظر کمباین" },
+        { id: 4, name: "مدیر مکانیزاسیون استان" },
+        { id: 5, name: "مدیر برنامه" },
     ];
     const [formData, setFormData] = useState({
         username: "",
@@ -23,7 +31,26 @@ export default function EditUserPage() {
         engineer_code: "",
         role_id: 0,
         password: "",
+//           permissions: {
+//     p1: true,
+//     p2: true,
+//     p3: true
+//   }
     });
+    useEffect(() => {
+        if (userData) {
+            setFormData({
+                username: userData.username || "",
+                name: userData.name || "",
+                lastname: userData.lastname || "",
+                phone: userData.phone || "",
+                national_code: userData.national_code || "",
+                engineer_code: userData.engineer_code || "",
+                role_id: userData.role_id || 0,
+                password: "",
+            });
+        }
+    }, [userData]);
     return (
         <div className="edit-user-page bg-white w-full min-h-svh pt-30 pb-5 px-10 lg:pr-90">
             <div className="main-content">
@@ -37,134 +64,185 @@ export default function EditUserPage() {
                 </div>
                 <div className="form-container mt-8">
                     <div className="row flex flex-wrap gap-y-5">
-                        <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
-                            <InputContainer
-                                title={
-                                    <>
-                                        نام
-                                        <span className="text-red-500">*</span>
-                                    </>
-                                }
-                                type={"text"}
-                                onChange={(v) =>
-                                    setFormData((p) => ({
-                                        ...p,
-                                        fname: v,
-                                    }))
-                                }
-                                dir={"rtl"}
-                            />
-                        </div>
-                        <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
-                            <InputContainer
-                                title={
-                                    <>
-                                        نام خانوادگی
-                                        <span className="text-red-500">*</span>
-                                    </>
-                                }
-                                type={"text"}
-                                onChange={(v) =>
-                                    setFormData((p) => ({
-                                        ...p,
-                                        fname: v,
-                                    }))
-                                }
-                                dir={"rtl"}
-                            />
-                        </div>
-                        <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
-                            <InputContainer
-                                title={<>شماره تماس</>}
-                                type={"text"}
-                                onChange={(v) =>
-                                    setFormData((p) => ({
-                                        ...p,
-                                        fname: v,
-                                    }))
-                                }
-                                dir={"ltr"}
-                            />
-                        </div>
-                        <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
-                            <InputContainer
-                                title={<>کد ملی</>}
-                                type={"text"}
-                                onChange={(v) =>
-                                    setFormData((p) => ({
-                                        ...p,
-                                        fname: v,
-                                    }))
-                                }
-                                dir={"ltr"}
-                            />
-                        </div>
-                        <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
-                            <InputContainer
-                                title={<>کد نظام مهندسی</>}
-                                type={"text"}
-                                onChange={(v) =>
-                                    setFormData((p) => ({
-                                        ...p,
-                                        fname: v,
-                                    }))
-                                }
-                                dir={"ltr"}
-                            />
-                        </div>
-                        <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
-                            <InsertDropMenu
-                                title={
-                                    <>
-                                        نقش کاربری
-                                        <span className="text-red-500">*</span>
-                                    </>
-                                }
-                                menuItems={roles}
-                                onClick={(value) =>
-                                    setFormData((p) => ({
-                                        ...p,
-                                        role: value,
-                                    }))
-                                }
-                            />
-                        </div>
-                        <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
-                            <InputContainer
-                                title={
-                                    <>
-                                        نام کاربری
-                                        <span className="text-red-500">*</span>
-                                    </>
-                                }
-                                type={"text"}
-                                onChange={(v) =>
-                                    setFormData((p) => ({
-                                        ...p,
-                                        fname: v,
-                                    }))
-                                }
-                                dir={"rtl"}
-                            />
-                        </div>
-                        <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
-                            <InputContainer
-                                title={
-                                    <>
-                                        گذرواژه
-                                        <span className="text-red-500">*</span>
-                                    </>
-                                }
-                                type={"password"}
-                                onChange={(v) =>
-                                    setFormData((p) => ({
-                                        ...p,
-                                        fname: v,
-                                    }))
-                                }
-                                dir={"ltr"}
-                            />
-                        </div>
+                        {status === "pending" ? (
+                            <>
+                                <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
+                                    <InputLoading />
+                                </div>
+                                <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
+                                    <InputLoading />
+                                </div>
+                                <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
+                                    <InputLoading />
+                                </div>
+                                <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
+                                    <InputLoading />
+                                </div>
+                                <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
+                                    <InputLoading />
+                                </div>
+                                <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
+                                    <InputLoading />
+                                </div>
+                                <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
+                                    <InputLoading />
+                                </div>
+                                <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
+                                    <InputLoading />
+                                </div>
+                            </>
+                        ) : status === "success" ? (
+                            <>
+                                <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
+                                    <InputContainer
+                                        title={
+                                            <>
+                                                نام
+                                                <span className="text-red-500">
+                                                    *
+                                                </span>
+                                            </>
+                                        }
+                                        type={"text"}
+                                        value={formData.name}
+                                        onChange={(v) =>
+                                            setFormData((p) => ({
+                                                ...p,
+                                                name: v,
+                                            }))
+                                        }
+                                        dir={"rtl"}
+                                    />
+                                </div>
+                                <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
+                                    <InputContainer
+                                        title={
+                                            <>
+                                                نام خانوادگی
+                                                <span className="text-red-500">
+                                                    *
+                                                </span>
+                                            </>
+                                        }
+                                        type={"text"}
+                                        value={formData.lastname}
+                                        onChange={(v) =>
+                                            setFormData((p) => ({
+                                                ...p,
+                                                lastname: v,
+                                            }))
+                                        }
+                                        dir={"rtl"}
+                                    />
+                                </div>
+                                <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
+                                    <InputContainer
+                                        title={<>شماره تماس</>}
+                                        type={"text"}
+                                        value={formData.phone}
+                                        onChange={(v) =>
+                                            setFormData((p) => ({
+                                                ...p,
+                                                phone: v,
+                                            }))
+                                        }
+                                        dir={"ltr"}
+                                    />
+                                </div>
+                                <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
+                                    <InputContainer
+                                        title={<>کد ملی</>}
+                                        type={"text"}
+                                        value={formData.national_code}
+                                        onChange={(v) =>
+                                            setFormData((p) => ({
+                                                ...p,
+                                                national_code: v,
+                                            }))
+                                        }
+                                        dir={"ltr"}
+                                    />
+                                </div>
+                                <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
+                                    <InputContainer
+                                        title={<>کد نظام مهندسی</>}
+                                        type={"text"}
+                                        value={formData.engineer_code}
+                                        onChange={(v) =>
+                                            setFormData((p) => ({
+                                                ...p,
+                                                engineer_code: v,
+                                            }))
+                                        }
+                                        dir={"ltr"}
+                                    />
+                                </div>
+                                <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
+                                    <InsertDropMenu
+                                        title={
+                                            <>
+                                                نقش کاربری
+                                                <span className="text-red-500">
+                                                    *
+                                                </span>
+                                            </>
+                                        }
+                                        menuItems={roles}
+                                        selectedValue={formData.role_id}
+                                        onClick={(value) =>
+                                            setFormData((p) => ({
+                                                ...p,
+                                                role_id: value,
+                                            }))
+                                        }
+                                    />
+                                </div>
+                                <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
+                                    <InputContainer
+                                        title={
+                                            <>
+                                                نام کاربری
+                                                <span className="text-red-500">
+                                                    *
+                                                </span>
+                                            </>
+                                        }
+                                        type={"text"}
+                                        value={formData.username}
+                                        onChange={(v) =>
+                                            setFormData((p) => ({
+                                                ...p,
+                                                username: v,
+                                            }))
+                                        }
+                                        dir={"rtl"}
+                                    />
+                                </div>
+                                <div className="col w-full sm:w-1/2 md:w-4/12 lg:w-3/12 p-1">
+                                    <InputContainer
+                                        title={
+                                            <>
+                                                گذرواژه
+                                                <span className="text-red-500">
+                                                    *
+                                                </span>
+                                            </>
+                                        }
+                                        type={"password"}
+                                        value={formData.password}
+                                        onChange={(v) =>
+                                            setFormData((p) => ({
+                                                ...p,
+                                                password: v,
+                                            }))
+                                        }
+                                        dir={"ltr"}
+                                    />
+                                </div>
+                            </>
+                        ) : (
+                            status === "error" && ""
+                        )}
                     </div>
                     <div className="permissions mt-10">
                         <div className="combine-permissions">
@@ -178,10 +256,10 @@ export default function EditUserPage() {
                             </div>
                             <div className="row flex flex-wrap mt-8">
                                 <div className="col w-1/2 p-2 md:w-3/12 lg:1/12">
-                                    <SwitchBtn title={"ثبت کمباین:"} />
+                                    <SwitchBtn title={"مشاهده کمباین:"} />
                                 </div>
                                 <div className="col w-1/2 p-2 md:w-3/12 lg:1/12">
-                                    <SwitchBtn title={"مشاهده کمباین:"} />
+                                    <SwitchBtn title={"ثبت کمباین:"} />
                                 </div>
                                 <div className="col w-1/2 p-2 md:w-3/12 lg:1/12">
                                     <SwitchBtn title={"ویرایش کمباین:"} />
@@ -215,30 +293,7 @@ export default function EditUserPage() {
                                 </div>
                             </div>
                         </div>
-                        <div className="inspector-permissions mt-10">
-                            <div className="title flex items-center gap-2">
-                                <div className="icon">
-                                    <div className="size-5 rounded-lg bg-emerald-600"></div>
-                                </div>
-                                <h5 className="text-lg text-gray-800 font-bold">
-                                    دسترسی ناظران
-                                </h5>
-                            </div>
-                            <div className="row flex flex-wrap mt-8">
-                                <div className="col w-1/2 p-2 md:w-3/12 lg:1/12">
-                                    <SwitchBtn title={"مشاهده ناظران:"} />
-                                </div>
-                                <div className="col w-1/2 p-2 md:w-3/12 lg:1/12">
-                                    <SwitchBtn title={"ایجاد ناظر:"} />
-                                </div>
-                                <div className="col w-1/2 p-2 md:w-3/12 lg:1/12">
-                                    <SwitchBtn title={"ویرایش ناظر:"} />
-                                </div>
-                                <div className="col w-1/2 p-2 md:w-3/12 lg:1/12">
-                                    <SwitchBtn title={"حذف ناظر:"} />
-                                </div>
-                            </div>
-                        </div>
+
                         <div className="users-permissions mt-10">
                             <div className="title flex items-center gap-2">
                                 <div className="icon">
