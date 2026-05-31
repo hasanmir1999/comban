@@ -3,9 +3,10 @@
 import InputContainer from "@/components/inputContainer/InputContainer";
 import PlzSearch from "@/components/plzSearch/PlzSearch";
 import TabelError from "@/components/tabelError/TabelError";
+import TabelNotFound from "@/components/tabelNotFound/TabelNotFound";
 import TableLoading from "@/components/tableLoading/TableLoading";
 import TecnicalItem from "@/components/tecnicalItem/TecnicalItem";
-import { useCombines } from "@/hooks/useCombines";
+import { useCombine } from "@/hooks/useCombine";
 import api from "@/lib/axios";
 import {
     faSpinner,
@@ -26,7 +27,7 @@ export default function InspectionPage() {
     const [searchInput, setSearchInput] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
     const [combineId, setCombineId] = useState(null);
-    const { data: combines, status: combinesStatus } = useCombines(searchTerm);
+    const { data: combine, status: combineStatus } = useCombine(searchTerm);
 
     const NESHAN_KEY = "service.8ef81f9541174ee5a5cd158647f0f879";
     const tecnicalItems = [
@@ -257,7 +258,7 @@ export default function InspectionPage() {
                                     <InputContainer
                                         type={"text"}
                                         title={"جستجو کمباین مورد نظر:"}
-                                        placeHolder={"متن جستجو (سریال VIN...)"}
+                                        placeHolder={"متن جستجو (سریال VIN)"}
                                         onChange={(v) => {
                                             setSearchInput(v);
                                         }}
@@ -321,70 +322,78 @@ export default function InspectionPage() {
                                 <div className="table-body bg-white border border-t-0 border-gray-300 rounded-lg rounded-t-none">
                                     {!searchTerm ? (
                                         <PlzSearch />
-                                    ) : combinesStatus === "pending" ? (
+                                    ) : combineStatus === "pending" ? (
                                         <TableLoading />
-                                    ) : combinesStatus === "success" ? (
-                                        combines?.map((combine) => (
-                                            <div
-                                                key={combine.id}
-                                                onClick={() =>
-                                                    setCombineId(combine.id)
-                                                }
-                                                className={`row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors cursor-pointer ${
-                                                    combineId === combine.id
-                                                        ? "bg-emerald-50 border-l-4 border-l-emerald-600"
-                                                        : ""
-                                                }`}
-                                            >
-                                                <div className="w-20 px-3 shrink-0 text-sm text-gray-800 truncate">
-                                                    {combine.id}
-                                                </div>
+                                    ) : combineStatus === "success" ? (
+                                        combine?.length === 0 ? (
+                                            <TabelNotFound />
+                                        ) : (
+                                            combine?.map((combine) => (
                                                 <div
-                                                    className="w-40 px-3 shrink-0 text-sm text-gray-800 truncate"
-                                                    title={combine.owner_name}
-                                                >
-                                                    {combine.owner_name}
-                                                </div>
-                                                <div
-                                                    className="w-32 px-3 shrink-0 text-sm text-gray-800 truncate"
-                                                    title={combine.owner_phone}
-                                                >
-                                                    {combine.owner_phone}
-                                                </div>
-                                                <div
-                                                    className="w-28 px-3 shrink-0 text-sm text-gray-800 truncate"
-                                                    title={combine.brand}
-                                                >
-                                                    {combine.brand}
-                                                </div>
-                                                <div
-                                                    className="w-28 px-3 shrink-0 text-sm text-gray-800 truncate"
-                                                    title={
-                                                        combine.combine_model
+                                                    key={combine.id}
+                                                    onClick={() =>
+                                                        setCombineId(combine.id)
                                                     }
+                                                    className={`row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors cursor-pointer ${
+                                                        combineId === combine.id
+                                                            ? "bg-emerald-50 border-l-4 border-l-emerald-600"
+                                                            : ""
+                                                    }`}
                                                 >
-                                                    {combine.combine_model}
+                                                    <div className="w-20 px-3 shrink-0 text-sm text-gray-800 truncate">
+                                                        {combine.id}
+                                                    </div>
+                                                    <div
+                                                        className="w-40 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                        title={
+                                                            combine.owner_name
+                                                        }
+                                                    >
+                                                        {combine.owner_name}
+                                                    </div>
+                                                    <div
+                                                        className="w-32 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                        title={
+                                                            combine.owner_phone
+                                                        }
+                                                    >
+                                                        {combine.owner_phone}
+                                                    </div>
+                                                    <div
+                                                        className="w-28 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                        title={combine.brand}
+                                                    >
+                                                        {combine.brand}
+                                                    </div>
+                                                    <div
+                                                        className="w-28 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                        title={
+                                                            combine.combine_model
+                                                        }
+                                                    >
+                                                        {combine.combine_model}
+                                                    </div>
+                                                    <div
+                                                        className="w-44 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                        title={
+                                                            combine.serial_number
+                                                        }
+                                                    >
+                                                        {combine.serial_number}
+                                                    </div>
+                                                    <div
+                                                        className="w-36 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                        title={
+                                                            combine.engine_number
+                                                        }
+                                                    >
+                                                        {combine.engine_number}
+                                                    </div>
                                                 </div>
-                                                <div
-                                                    className="w-44 px-3 shrink-0 text-sm text-gray-800 truncate"
-                                                    title={
-                                                        combine.serial_number
-                                                    }
-                                                >
-                                                    {combine.serial_number}
-                                                </div>
-                                                <div
-                                                    className="w-36 px-3 shrink-0 text-sm text-gray-800 truncate"
-                                                    title={
-                                                        combine.engine_number
-                                                    }
-                                                >
-                                                    {combine.engine_number}
-                                                </div>
-                                            </div>
-                                        ))
+                                            ))
+                                        )
                                     ) : (
-                                        combinesStatus === "error" && (
+                                        combineStatus === "error" && (
                                             <TabelError />
                                         )
                                     )}

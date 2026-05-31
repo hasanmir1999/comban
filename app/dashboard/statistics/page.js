@@ -16,11 +16,12 @@ import TableLoading from "@/components/tableLoading/TableLoading";
 import TabelError from "@/components/tabelError/TabelError";
 import InputContainer from "@/components/inputContainer/InputContainer";
 import { useCombines } from "@/hooks/useCombines";
+import TabelNotFound from "@/components/tabelNotFound/TabelNotFound";
 
 export default function StatisticsPage() {
     const [searchInput, setSearchInput] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
-    const { data: statistics, status: statisticsStatus } = useStatistics();
+    // const { data: statistics, status: statisticsStatus } = useStatistics();
     const { data: inspections, isLoading, isError, error } = useInspections();
     const { data: combines, status: combinesStatus } = useCombines(searchTerm);
 
@@ -44,11 +45,18 @@ export default function StatisticsPage() {
         { id: 1, name: "قبول" },
         { id: 2, name: "رد" },
     ];
+    const showAllHandler = () => {
+        setSearchInput("");
+        setSearchTerm("");
+    };
+    const searchHandler = () => {
+        setSearchTerm(searchInput);
+    };
 
     return (
         <div className="statistics-page bg-white w-full min-h-svh pt-30 pb-5 px-10 lg:pr-90">
             <div className="main-content">
-                <div className="statistics-container">
+                {/* <div className="statistics-container">
                     <div className="title flex items-center gap-2">
                         <div className="icon">
                             <div className="size-5 rounded-lg bg-emerald-600"></div>
@@ -98,9 +106,9 @@ export default function StatisticsPage() {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
-                <div className="report-container mt-10">
+                <div className="report-container">
                     <div className="title flex items-center gap-2">
                         <div className="icon">
                             <div className="size-5 rounded-lg bg-emerald-600"></div>
@@ -314,13 +322,13 @@ export default function StatisticsPage() {
                                 <div className="col">
                                     <div className="btn-container flex items-center gap-2">
                                         <button
-                                            // onClick={searchHandler}
+                                            onClick={searchHandler}
                                             className="text-white cursor-pointer bg-emerald-600 whitespace-nowrap py-1 px-4 rounded-lg text-xs sm:text-sm"
                                         >
                                             جستجو
                                         </button>
                                         <button
-                                            // onClick={showAllHandler}
+                                            onClick={showAllHandler}
                                             className="text-white cursor-pointer bg-amber-500 whitespace-nowrap py-1 px-4 rounded-lg text-xs sm:text-sm"
                                         >
                                             نمایش همه
@@ -375,58 +383,66 @@ export default function StatisticsPage() {
                                     {combinesStatus === "pending" ? (
                                         <TableLoading />
                                     ) : combinesStatus === "success" ? (
-                                        combines?.map((combine) => (
-                                            <div
-                                                key={combine.id}
-                                                className={`row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors cursor-pointer`}
-                                            >
-                                                <div className="w-20 px-3 shrink-0 text-sm text-gray-800 truncate">
-                                                    {combine.id}
-                                                </div>
+                                        combines?.length === 0 ? (
+                                            <TabelNotFound />
+                                        ) : (
+                                            combines?.map((combine) => (
                                                 <div
-                                                    className="w-40 px-3 shrink-0 text-sm text-gray-800 truncate"
-                                                    title={combine.owner_name}
+                                                    key={combine.id}
+                                                    className={`row p-3 flex items-center border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors cursor-pointer`}
                                                 >
-                                                    {combine.owner_name}
+                                                    <div className="w-20 px-3 shrink-0 text-sm text-gray-800 truncate">
+                                                        {combine.id}
+                                                    </div>
+                                                    <div
+                                                        className="w-40 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                        title={
+                                                            combine.owner_name
+                                                        }
+                                                    >
+                                                        {combine.owner_name}
+                                                    </div>
+                                                    <div
+                                                        className="w-32 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                        title={
+                                                            combine.owner_phone
+                                                        }
+                                                    >
+                                                        {combine.owner_phone}
+                                                    </div>
+                                                    <div
+                                                        className="w-28 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                        title={combine.brand}
+                                                    >
+                                                        {combine.brand}
+                                                    </div>
+                                                    <div
+                                                        className="w-28 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                        title={
+                                                            combine.combine_model
+                                                        }
+                                                    >
+                                                        {combine.combine_model}
+                                                    </div>
+                                                    <div
+                                                        className="w-44 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                        title={
+                                                            combine.serial_number
+                                                        }
+                                                    >
+                                                        {combine.serial_number}
+                                                    </div>
+                                                    <div
+                                                        className="w-36 px-3 shrink-0 text-sm text-gray-800 truncate"
+                                                        title={
+                                                            combine.engine_number
+                                                        }
+                                                    >
+                                                        {combine.engine_number}
+                                                    </div>
                                                 </div>
-                                                <div
-                                                    className="w-32 px-3 shrink-0 text-sm text-gray-800 truncate"
-                                                    title={combine.owner_phone}
-                                                >
-                                                    {combine.owner_phone}
-                                                </div>
-                                                <div
-                                                    className="w-28 px-3 shrink-0 text-sm text-gray-800 truncate"
-                                                    title={combine.brand}
-                                                >
-                                                    {combine.brand}
-                                                </div>
-                                                <div
-                                                    className="w-28 px-3 shrink-0 text-sm text-gray-800 truncate"
-                                                    title={
-                                                        combine.combine_model
-                                                    }
-                                                >
-                                                    {combine.combine_model}
-                                                </div>
-                                                <div
-                                                    className="w-44 px-3 shrink-0 text-sm text-gray-800 truncate"
-                                                    title={
-                                                        combine.serial_number
-                                                    }
-                                                >
-                                                    {combine.serial_number}
-                                                </div>
-                                                <div
-                                                    className="w-36 px-3 shrink-0 text-sm text-gray-800 truncate"
-                                                    title={
-                                                        combine.engine_number
-                                                    }
-                                                >
-                                                    {combine.engine_number}
-                                                </div>
-                                            </div>
-                                        ))
+                                            ))
+                                        )
                                     ) : (
                                         combinesStatus === "error" && (
                                             <TabelError />
