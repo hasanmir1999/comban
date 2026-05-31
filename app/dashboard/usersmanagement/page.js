@@ -19,7 +19,7 @@ export default function UsersManagementPage() {
     const [openMenuId, setOpenMenuId] = useState(null);
     const queryClient = useQueryClient();
     const [searchInput, setSearchInput] = useState("");
-    const [searchQuery, setSearchQuery] = useState(""); // برای ذخیره کوئری جستجو
+    const [searchQuery, setSearchQuery] = useState("");
 
     const [formData, setFormData] = useState({
         username: "",
@@ -28,7 +28,7 @@ export default function UsersManagementPage() {
         phone: "",
         national_code: "",
         engineer_code: "",
-        role_id: 1,
+        role_id: '',
         password: "",
     });
 
@@ -58,7 +58,7 @@ export default function UsersManagementPage() {
                 phone: "",
                 national_code: "",
                 engineer_code: "",
-                role_id: 1,
+                role_id: '',
                 password: "",
             });
         },
@@ -198,6 +198,7 @@ export default function UsersManagementPage() {
                                     </>
                                 }
                                 menuItems={roles}
+                                simpleTitle={"نقش کاربری"}
                                 selectedValue={formData.role_id}
                                 onClick={(value) =>
                                     setFormData((p) => ({

@@ -2,9 +2,10 @@
 
 import InputContainer from "@/components/inputContainer/InputContainer";
 import InsertDropMenu from "@/components/insertDropMenu/InsertDropMenu";
+import api from "@/lib/axios";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
+
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -29,9 +30,15 @@ export default function NewCombinePage() {
     ];
 
     const createCombineHandler = async () => {
+        console.log(formData)
+        const { owner_name, combine_model, serial_number, brand } = formData;
+        if (!owner_name || !combine_model || !serial_number || !brand) {
+            toast.error("لطفاً همه فیلدهای ضروری را پر کنید.");
+            return;
+        }
         setLoading(true);
         try {
-            const res = await axios.post("https://lotexev.ir/api-v1/", {
+            const res = await api.post("/api-v1/create-combine", {
                 ...formData,
             });
             console.log(res);
@@ -95,6 +102,7 @@ export default function NewCombinePage() {
                                         <span className="text-red-500">*</span>
                                     </>
                                 }
+                                simpleTitle={'برند'}
                                 menuItems={combineBrand}
                                 onClick={(value) =>
                                     setFormData((p) => ({

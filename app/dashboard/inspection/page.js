@@ -1,10 +1,12 @@
 "use client";
 
 import InputContainer from "@/components/inputContainer/InputContainer";
+import PlzSearch from "@/components/plzSearch/PlzSearch";
 import TabelError from "@/components/tabelError/TabelError";
 import TableLoading from "@/components/tableLoading/TableLoading";
 import TecnicalItem from "@/components/tecnicalItem/TecnicalItem";
 import { useCombines } from "@/hooks/useCombines";
+import api from "@/lib/axios";
 import {
     faSpinner,
     faLocationDot,
@@ -26,6 +28,7 @@ export default function InspectionPage() {
     const [combineId, setCombineId] = useState(null);
     const { data: combines, status: combinesStatus } = useCombines(searchTerm);
 
+    const NESHAN_KEY = "service.8ef81f9541174ee5a5cd158647f0f879";
     const tecnicalItems = [
         {
             id: 1,
@@ -108,11 +111,6 @@ export default function InspectionPage() {
             title: "بخاطر جلوگیری از سرش کمباین هنگامی که از جلو به کمباین نگاه کردیم آج لاستیک های محرک بصورت 7 و متحرک بصورت 8 مشاهده گردید.",
         },
     ];
-
-    const showAllHandler = () => {
-        setSearchInput("");
-        setSearchTerm("");
-    };
 
     const searchHandler = () => {
         setSearchTerm(searchInput);
@@ -223,11 +221,9 @@ export default function InspectionPage() {
                 if (c.photo) formData.append("photos", c.photo);
             });
 
-            await axios.post(
-                "https://lotexev.ir/api-v1/create-inspection",
-                formData,
-                { headers: { "Content-Type": "multipart/form-data" } },
-            );
+            await api.post("/api-v1/create-inspection", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
             //1
             toast.success("بازرسی فنی با موفقیت ثبت شد");
             setResult("");
@@ -261,9 +257,7 @@ export default function InspectionPage() {
                                     <InputContainer
                                         type={"text"}
                                         title={"جستجو کمباین مورد نظر:"}
-                                        placeHolder={
-                                            "متن جستجو (مثلا نام مالک،سریال،شماره موتور،...)"
-                                        }
+                                        placeHolder={"متن جستجو (سریال VIN...)"}
                                         onChange={(v) => {
                                             setSearchInput(v);
                                         }}
@@ -273,16 +267,10 @@ export default function InspectionPage() {
                                 <div className="col">
                                     <div className="btn-container flex items-center gap-2">
                                         <button
-                                            // onClick={searchHandler}
+                                            onClick={searchHandler}
                                             className="text-white cursor-pointer bg-emerald-600 whitespace-nowrap py-1 px-4 rounded-lg text-xs sm:text-sm"
                                         >
                                             جستجو
-                                        </button>
-                                        <button
-                                            // onClick={showAllHandler}
-                                            className="text-white cursor-pointer bg-amber-500 whitespace-nowrap py-1 px-4 rounded-lg text-xs sm:text-sm"
-                                        >
-                                            نمایش همه
                                         </button>
                                     </div>
                                 </div>
@@ -331,7 +319,9 @@ export default function InspectionPage() {
                                     </ul>
                                 </div>
                                 <div className="table-body bg-white border border-t-0 border-gray-300 rounded-lg rounded-t-none">
-                                    {combinesStatus === "pending" ? (
+                                    {!searchTerm ? (
+                                        <PlzSearch />
+                                    ) : combinesStatus === "pending" ? (
                                         <TableLoading />
                                     ) : combinesStatus === "success" ? (
                                         combines?.map((combine) => (
@@ -458,15 +448,21 @@ export default function InspectionPage() {
                                 )}
                             </div>
                         </div>
-                        {/* {location && (
+                        {location && (
                             <div className="mt-3">
                                 <img
-                                    src={`https://static.neshan.org/api/v1/static?key=YOUR_API_KEY&center=${location.lng},${location.lat}&zoom=15&width=400&height=300&marker=red`}
+                                    src={`https://api.neshan.org/v5/static?key=${encodeURIComponent(
+                                        NESHAN_KEY,
+                                    )}&type=light&width=500&height=300&zoom=15&latitude=${encodeURIComponent(
+                                        location.lat,
+                                    )}&longitude=${encodeURIComponent(
+                                        location.lng,
+                                    )}&marker=red`}
                                     alt="نقشه موقعیت"
                                     className="rounded-lg border border-gray-300"
                                 />
                             </div>
-                        )} */}
+                        )}
 
                         {/* توضیحات کلی */}
                         <div className="col w-full p-1">

@@ -82,6 +82,7 @@ export default function EditUserPage() {
 
     const handleUpdate = async () => {
         setLoading(true);
+        console.log(formData)
         try {
             const response = await api.put(
                 `/api-v1/update-user/${userId}`,

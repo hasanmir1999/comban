@@ -14,5 +14,6 @@ export const useCombines = (searchTerm) => {
         queryFn: () => fetchCombines(searchTerm),
         staleTime: 5 * 60 * 1000,
         retry: 2,
+        enabled: !!searchTerm, 
     });
 };

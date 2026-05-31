@@ -8,11 +8,12 @@ export default function InsertDropMenu({
     menuItems,
     onClick,
     selectedValue,
+    simpleTitle
 }) {
     const [menuStat, setMenuStat] = useState(false);
     const [selectedItem, setSelectedItem] = useState("");
 
-    // sync selectedItem with selectedValue from parent
+
     useEffect(() => {
         if (selectedValue !== undefined && selectedValue !== null) {
             const item = menuItems.find((item) => item.id === selectedValue);
@@ -36,7 +37,7 @@ export default function InsertDropMenu({
                 >
                     <div className="selected-item-text text-gray-800">
                         {selectedItem === ""
-                            ? menuItems[0]?.name
+                            ? <p className="text-gray-300">انتخاب {simpleTitle}</p>
                             : selectedItem}
                     </div>
                     <FontAwesomeIcon
@@ -53,7 +54,7 @@ export default function InsertDropMenu({
                                 <li
                                     key={item.id}
                                     onClick={() => {
-                                        onClick(item.id);
+                                        onClick(item.name);
                                         setSelectedItem(item.name);
                                         setMenuStat(false);
                                     }}
